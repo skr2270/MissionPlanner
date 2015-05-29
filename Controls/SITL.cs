@@ -79,7 +79,7 @@ namespace MissionPlanner.Controls
         {
             var exepath = CheckandGetSITLImage("ArduPlane.elf");
 
-            StartSITL(exepath, "jsbsim", BuildHomeLocation(markeroverlay.Markers[0].Position), " --autotest-dir ../../", 1);
+            StartSITL(exepath, "jsbsim", BuildHomeLocation(markeroverlay.Markers[0].Position), " --autotest-dir " + Application.StartupPath.Replace('\\','/'), 1);
         }
 
         private void pictureBoxrover_Click(object sender, EventArgs e)
@@ -137,6 +137,8 @@ namespace MissionPlanner.Controls
             string path = Environment.GetEnvironmentVariable("PATH");
 
             Environment.SetEnvironmentVariable("PATH", Application.StartupPath + ";" + path, EnvironmentVariableTarget.Process);
+
+            Environment.SetEnvironmentVariable("HOME", Application.StartupPath, EnvironmentVariableTarget.Process);
 
             ProcessStartInfo exestart = new ProcessStartInfo();
             exestart.FileName = exepath;
