@@ -127,9 +127,23 @@ namespace MissionPlanner.Controls
             exestart.FileName = exepath;
             exestart.Arguments = String.Format("-M{0} -O{1} -s{2}", model, homelocation, speedup);
             exestart.WorkingDirectory = simdir;
+            exestart.WindowStyle = ProcessWindowStyle.Minimized;
 
             var proc = System.Diagnostics.Process.Start(exestart);
 
+            System.Threading.Thread.Sleep(2000);
+
+            var tcpserial = new Comms.TcpSerial();
+
+            tcpserial.client = new System.Net.Sockets.TcpClient("127.0.0.1", 5760);
+
+            MainV2.comPort.BaseStream = tcpserial;
+
+            MainV2.comPort.Open(true, true);
+
+            MainV2.View.ShowScreen(MainV2.View.screens[0].Name);
+
+            this.Close();
         }
 
         private void myGMAP1_OnMarkerEnter(GMapMarker item)
