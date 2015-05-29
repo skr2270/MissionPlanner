@@ -54,14 +54,21 @@ namespace MissionPlanner.Controls
             if (!Directory.Exists(sitldirectory))
                 Directory.CreateDirectory(sitldirectory);
 
-            myGMAP1.MapProvider = /*GCSViews.FlightData.mymap.MapProvider */ GMapProviders.GoogleSatelliteMap;
+            homemarker.Position = MainV2.comPort.MAV.cs.HomeLocation;
+
+            myGMAP1.Position = homemarker.Position;
+
+            myGMAP1.MapProvider = GCSViews.FlightData.mymap.MapProvider;
+            myGMAP1.MaxZoom = 22;
+            myGMAP1.Zoom = 16;
+            myGMAP1.DisableFocusOnMouseEnter = true;
 
             markeroverlay = new GMapOverlay("markers");
             myGMAP1.Overlays.Add(markeroverlay);
 
             markeroverlay.Markers.Add(homemarker);
 
-            myGMAP1.MaxZoom = 22;
+            myGMAP1.Invalidate();
 
             MissionPlanner.Utilities.Tracking.AddPage(this.GetType().ToString(), this.Text);
         }
