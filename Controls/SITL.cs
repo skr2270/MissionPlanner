@@ -79,6 +79,14 @@ namespace MissionPlanner.Controls
         {
             var exepath = CheckandGetSITLImage("ArduPlane.elf");
 
+            string simdir = sitldirectory + "jsbsim" + Path.DirectorySeparatorChar;
+            string destfile = simdir + Path.DirectorySeparatorChar + "JSBSim.exe";
+
+            if (!File.Exists(destfile))
+            {
+                File.Copy(Application.StartupPath + Path.DirectorySeparatorChar + "JSBSim.exe", destfile);
+            }
+
             StartSITL(exepath, "jsbsim", BuildHomeLocation(markeroverlay.Markers[0].Position), " --autotest-dir " + Application.StartupPath.Replace('\\','/'), 1);
         }
 
@@ -127,18 +135,15 @@ namespace MissionPlanner.Controls
 
         private void StartSITL(string exepath, string model, string homelocation, string extraargs = "", int speedup = 1)
         {
-            //ArduCopter.elf -M+ -O-34.98106,117.85201,40,0 
             string simdir = sitldirectory + model + Path.DirectorySeparatorChar;
 
             Directory.CreateDirectory(simdir);
 
-            //File.WriteAllText(simdir + "/etc/.bashrc", "export PATH=.;$PATH");
-
             string path = Environment.GetEnvironmentVariable("PATH");
 
-            Environment.SetEnvironmentVariable("PATH", Application.StartupPath + ";" + path, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("PATH", simdir + ";" + path, EnvironmentVariableTarget.Process);
 
-            Environment.SetEnvironmentVariable("HOME", Application.StartupPath, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("HOME", simdir, EnvironmentVariableTarget.Process);
 
             ProcessStartInfo exestart = new ProcessStartInfo();
             exestart.FileName = exepath;
