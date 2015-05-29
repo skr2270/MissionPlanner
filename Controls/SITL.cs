@@ -21,6 +21,12 @@ namespace MissionPlanner.Controls
 
         GMapOverlay markeroverlay;
 
+        GMapMarkerWP homemarker = new GMapMarkerWP(new PointLatLng(-34.98106, 117.85201), "H");
+        bool onmarker = false;
+        bool mousedown = false;
+        private PointLatLng MouseDownStart;
+
+
         /*
         { "+",         MultiCopter::create },
     { "quad",      MultiCopter::create },
@@ -53,7 +59,9 @@ namespace MissionPlanner.Controls
             markeroverlay = new GMapOverlay("markers");
             myGMAP1.Overlays.Add(markeroverlay);
 
-            markeroverlay.Markers.Add(new GMapMarkerWP(new PointLatLng(-34.98106,117.85201), "H"));
+            markeroverlay.Markers.Add(homemarker);
+
+            myGMAP1.MaxZoom = 22;
 
             MissionPlanner.Utilities.Tracking.AddPage(this.GetType().ToString(), this.Text);
         }
@@ -122,6 +130,54 @@ namespace MissionPlanner.Controls
 
             var proc = System.Diagnostics.Process.Start(exestart);
 
+        }
+
+        private void myGMAP1_OnMarkerEnter(GMapMarker item)
+        {
+            if (!mousedown)
+                onmarker = true;
+        }
+
+        private void myGMAP1_OnMarkerLeave(GMapMarker item)
+        {
+            if (!mousedown)
+                onmarker = false;
+        }
+
+        private void myGMAP1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (onmarker)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    homemarker.Position = myGMAP1.FromLocalToLatLng(e.X, e.Y);
+                }
+            }
+            else if (mousedown)
+            {
+                PointLatLng point = myGMAP1.FromLocalToLatLng(e.X, e.Y);
+
+                double latdif = MouseDownStart.Lat - point.Lat;
+                double lngdif = MouseDownStart.Lng - point.Lng;
+
+                try
+                {
+                    myGMAP1.Position = new PointLatLng(myGMAP1.Position.Lat + latdif, myGMAP1.Position.Lng + lngdif);
+                }
+                catch { }
+            }
+        }
+
+        private void myGMAP1_MouseUp(object sender, MouseEventArgs e)
+        {
+            mousedown = false;
+            onmarker = false;
+        }
+
+        private void myGMAP1_MouseDown(object sender, MouseEventArgs e)
+        {
+            mousedown = true;
+            MouseDownStart = myGMAP1.FromLocalToLatLng(e.X, e.Y);
         }
     }
 }
