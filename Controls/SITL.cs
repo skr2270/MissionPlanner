@@ -79,28 +79,28 @@ namespace MissionPlanner.Controls
         {
             var exepath = CheckandGetSITLImage("ArduPlane.elf");
 
-            StartSITL(exepath, "jsbsim", BuildHomeLocation(markeroverlay.Markers[0].Position), 1);
+            StartSITL(exepath, "jsbsim", BuildHomeLocation(markeroverlay.Markers[0].Position), " --autotest-dir ../../", 1);
         }
 
         private void pictureBoxrover_Click(object sender, EventArgs e)
         {
             var exepath = CheckandGetSITLImage("APMrover2.elf");
 
-            StartSITL(exepath, "rover", BuildHomeLocation(markeroverlay.Markers[0].Position), 1);
+            StartSITL(exepath, "rover", BuildHomeLocation(markeroverlay.Markers[0].Position));
         }
 
         private void pictureBoxquad_Click(object sender, EventArgs e)
         {
             var exepath = CheckandGetSITLImage("ArduCopter.elf");
 
-            StartSITL(exepath, "+", BuildHomeLocation(markeroverlay.Markers[0].Position), 1);
+            StartSITL(exepath, "+", BuildHomeLocation(markeroverlay.Markers[0].Position));
         }
 
         private void pictureBoxheli_Click(object sender, EventArgs e)
         {
             var exepath = CheckandGetSITLImage("ArduHeli.elf");
 
-            StartSITL(exepath, "heli", BuildHomeLocation(markeroverlay.Markers[0].Position), 1);
+            StartSITL(exepath, "heli", BuildHomeLocation(markeroverlay.Markers[0].Position));
         }
 
         string BuildHomeLocation(PointLatLng homelocation, int heading = 0)
@@ -125,18 +125,25 @@ namespace MissionPlanner.Controls
             return sitldirectory + Path.GetFileNameWithoutExtension(filename) + ".exe";
         }
 
-        private void StartSITL(string exepath, string model, string homelocation, int speedup = 1)
+        private void StartSITL(string exepath, string model, string homelocation, string extraargs = "", int speedup = 1)
         {
             //ArduCopter.elf -M+ -O-34.98106,117.85201,40,0 
             string simdir = sitldirectory + model + Path.DirectorySeparatorChar;
 
             Directory.CreateDirectory(simdir);
 
+            //File.WriteAllText(simdir + "/etc/.bashrc", "export PATH=.;$PATH");
+
+            string path = Environment.GetEnvironmentVariable("PATH");
+
+            Environment.SetEnvironmentVariable("PATH", Application.StartupPath + ";" + path, EnvironmentVariableTarget.Process);
+
             ProcessStartInfo exestart = new ProcessStartInfo();
             exestart.FileName = exepath;
-            exestart.Arguments = String.Format("-M{0} -O{1} -s{2}", model, homelocation, speedup);
+            exestart.Arguments = String.Format("-M{0} -O{1} -s{2} {3}", model, homelocation, speedup, extraargs);
             exestart.WorkingDirectory = simdir;
             exestart.WindowStyle = ProcessWindowStyle.Minimized;
+            exestart.UseShellExecute = true;
 
             var proc = System.Diagnostics.Process.Start(exestart);
 
