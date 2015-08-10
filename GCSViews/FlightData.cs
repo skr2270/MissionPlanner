@@ -88,7 +88,7 @@ namespace MissionPlanner.GCSViews
         const float deg2rad = (float)(1.0 / rad2deg);
 
         public static HUD myhud;
-        public static GMapControl mymap;
+        public static myGMAP mymap;
 
         bool playingLog;
         double LogPlayBackSpeed = 1.0;
@@ -949,14 +949,6 @@ namespace MissionPlanner.GCSViews
 
                         gMapControl1.HoldInvalidation = true;
 
-                        int cnt = 0;
-
-                        while (gMapControl1.inOnPaint)
-                        {
-                            Thread.Sleep(1);
-                            cnt++;
-                        }
-
                         // maintain route history length
                         if (route.Points.Count > int.Parse(MainV2.config["NUM_tracklength"].ToString()))
                         {
@@ -968,14 +960,6 @@ namespace MissionPlanner.GCSViews
                         {
                             // trackPoints.Add(currentloc);
                             route.Points.Add(currentloc);
-                        }
-
-
-
-                        while (gMapControl1.inOnPaint)
-                        {
-                            Thread.Sleep(1);
-                            cnt++;
                         }
 
                         //route = new GMapRoute(route.Points, "track");
