@@ -147,7 +147,7 @@ namespace GMap.NET.WindowsForms
       }
 #endif
 
-        public virtual void OnRender(Graphics g)
+      public virtual void OnRender(GLGraphics g)
         {
 #if !PocketPC
          if(IsVisible)

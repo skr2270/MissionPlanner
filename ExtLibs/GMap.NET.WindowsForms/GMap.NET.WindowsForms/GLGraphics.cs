@@ -13,19 +13,52 @@ namespace GMap.NET.WindowsForms
     public class GLGraphics: GLControl
     {
         public Graphics graphicsObjectGDIP;
-        private bool started = false;
-        private Image objBitmap = new Bitmap(150, 150);
+        public bool started = false;
+        public Bitmap objBitmap = new Bitmap(1024, 1024, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-        public GLGraphics()
+        public GLGraphics():
+            base()
+        {
+            objBitmap.MakeTransparent();
+
+            graphicsObjectGDIP = Graphics.FromImage(objBitmap);
+        }
+        
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            try
+            {
+                if (opengl)
+                {
+                    base.OnHandleCreated(e);
+                }
+            }
+            catch (Exception ex) {  opengl = false; } // macs fail here
+        }
+
+        protected override void OnHandleDestroyed(EventArgs e)
+        {
+            try
+            {
+                if (opengl)
+                {
+                    base.OnHandleDestroyed(e);
+                }
+            }
+            catch (Exception ex) { opengl = false; }
+        }
+
+        protected override void OnLoad(EventArgs e)
         {
             opengl = true;
 
-            graphicsObjectGDIP = Graphics.FromImage(objBitmap);
+            base.OnLoad(e);
+
 
             try
             {
 
-                OpenTK.Graphics.GraphicsMode test = this.GraphicsMode;
+                //OpenTK.Graphics.GraphicsMode test = this.GraphicsMode;
 
                 int[] viewPort = new int[4];
 
@@ -39,7 +72,7 @@ namespace GMap.NET.WindowsForms
 
                 GL.PushAttrib(AttribMask.DepthBufferBit);
                 GL.Disable(EnableCap.DepthTest);
-                GL.Enable(EnableCap.Texture2D); 
+                GL.Enable(EnableCap.Texture2D);
                 GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
                 GL.Enable(EnableCap.Blend);
 
@@ -48,25 +81,31 @@ namespace GMap.NET.WindowsForms
                 GL.Enable(EnableCap.PointSmooth);
                 GL.Enable(EnableCap.PolygonSmooth);
             }
-            catch (Exception ex) {  }
+            catch (Exception ex) { }
 
             started = true;
         }
-
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-
-        }
-
-
+        
         protected override void OnResize(EventArgs e)
         {
+            if (!opengl)
+            {
+                objBitmap = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                objBitmap.MakeTransparent();
+                graphicsObjectGDIP = Graphics.FromImage(objBitmap);
+
+                graphicsObjectGDIP.SmoothingMode = SmoothingMode.AntiAlias;
+                graphicsObjectGDIP.InterpolationMode = InterpolationMode.NearestNeighbor;
+                graphicsObjectGDIP.CompositingMode = CompositingMode.SourceOver;
+                graphicsObjectGDIP.CompositingQuality = CompositingQuality.HighSpeed;
+                graphicsObjectGDIP.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                graphicsObjectGDIP.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            }
+
             if (DesignMode || !IsHandleCreated || !started)
                 return;
 
             base.OnResize(e);
-
-            graphicsObjectGDIP = Graphics.FromImage(objBitmap);
 
             try
             {
@@ -107,6 +146,8 @@ namespace GMap.NET.WindowsForms
                 }
             }
             catch { }
+
+            this.Invalidate();
         }
 
 
@@ -212,32 +253,43 @@ namespace GMap.NET.WindowsForms
         public void DrawImage(Image image, Rectangle rectangle, float srcX, float srcY, float srcWidth, float srcHeight,
             GraphicsUnit graphicsUnit, ImageAttributes tileFlipXYAttributes)
         {
-            //graphicsObjectGDIP.DrawImage(image, rectangle, srcX, srcY, srcWidth, srcHeight, graphicsUnit, TileFlipXYAttributes);
-            
-            DrawImage(image, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
-        }
-
-        public void DrawImage(Image image, Rectangle rectangle, int p1, int p2, long p3, long p4, GraphicsUnit graphicsUnit, ImageAttributes TileFlipXYAttributes)
-        {
-            DrawImage(image,rectangle.X,rectangle.Y, rectangle.Width, rectangle.Height);
+            DrawImage(image, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, srcX, srcY, srcWidth, srcHeight);
         }
 
         public void DrawImage(Image img, long x, long y, long width, long height)
         {
-            DrawImage(img, (int)x, (int)y, (int)width, (int)height);
+            DrawImage(img, (int)x, (int)y, (int)width, (int)height, 0, 0, width, height);
         }
 
-        public void DrawImage(Image img, int x, int y, int width, int height)
+        public void DrawImage(Image img, int x, int y, int width, int height, float srcX, float srcY, float srcWidth, float srcHeight)
         {
             if (opengl)
             {
                 if (img == null)
                     return;
-                //bitmap = new Bitmap(512,512);
+                
+                if (srcX >= srcWidth)
+                    return;
 
-                bitmap = ResizeImage(img, bitmap.Width, bitmap.Height);
+                if (srcY >= srcHeight)
+                    return;
+
+                bitmap = (Bitmap)img;
+
+                if (width > srcWidth)
+                {
+                    height *= (int)(height / srcHeight);
+                    width *= (int)(width / srcWidth);
+                }
+
+                if (srcX != 0)
+                {
+                    int temp;
+                }
 
                 GL.DeleteTexture(texture);
+
+                //int texture;
 
                 GL.GenTextures(1, out texture);
                 GL.BindTexture(TextureTarget.Texture2D, texture);
@@ -261,10 +313,15 @@ namespace GMap.NET.WindowsForms
 
                 GL.Begin(PrimitiveType.Quads);
 
-                GL.TexCoord2(0.0f, 1.0f); GL.Vertex2(0, this.Height);
-                GL.TexCoord2(1.0f, 1.0f); GL.Vertex2(this.Width, this.Height);
-                GL.TexCoord2(1.0f, 0.0f); GL.Vertex2(this.Width, 0);
-                GL.TexCoord2(0.0f, 0.0f); GL.Vertex2(0, 0);
+                GL.TexCoord2(0.0f, 1.0f); GL.Vertex2(x, y + height);
+                GL.TexCoord2(1.0f, 1.0f); GL.Vertex2(x + width, y + height);
+                GL.TexCoord2(1.0f, 0.0f); GL.Vertex2(x + width, y);
+                GL.TexCoord2(0.0f, 0.0f); GL.Vertex2(x, y);
+
+                //GL.TexCoord2(0.0f, 1.0f); GL.Vertex2(0, this.Height);
+                //GL.TexCoord2(1.0f, 1.0f); GL.Vertex2(this.Width, this.Height);
+                //GL.TexCoord2(1.0f, 0.0f); GL.Vertex2(this.Width, 0);
+                //GL.TexCoord2(0.0f, 0.0f); GL.Vertex2(0, 0);
 
                 GL.End();
 
@@ -272,7 +329,7 @@ namespace GMap.NET.WindowsForms
             }
             else
             {
-                graphicsObjectGDIP.DrawImage(img, x, y, width, height);
+                graphicsObjectGDIP.DrawImage(img, new Rectangle(x, y, width, height), srcX, srcY, srcWidth, srcHeight, GraphicsUnit.Pixel, new ImageAttributes());
             }
         }
 
@@ -306,18 +363,18 @@ namespace GMap.NET.WindowsForms
 
         public void ResetTransform()
         {
+            graphicsObjectGDIP.ResetTransform();
+
             if (opengl)
             {
                 GL.LoadIdentity();
-            }
-            else
-            {
-                graphicsObjectGDIP.ResetTransform();
             }
         }
 
         public void ScaleTransform(float xscale, float yscale, MatrixOrder mat)
         {
+            graphicsObjectGDIP.TranslateTransform(xscale, yscale, mat);
+
             if (opengl)
             {
                 GL.Scale(xscale, yscale, 1);
@@ -330,19 +387,26 @@ namespace GMap.NET.WindowsForms
 
         public void RotateTransform(float angle)
         {
+            graphicsObjectGDIP.RotateTransform(angle);
+
             if (opengl)
             {
+                GL.LoadIdentity();
                 GL.Rotate(angle, 0, 0, 1);
-            }
-            else
-            {
-                graphicsObjectGDIP.RotateTransform(angle);
             }
         }
 
         public void TranslateTransform(float x, float y, MatrixOrder mat)
         {
-            TranslateTransform(x, y);
+            float bx = graphicsObjectGDIP.Transform.OffsetX;
+            float by = graphicsObjectGDIP.Transform.OffsetY;
+
+            graphicsObjectGDIP.TranslateTransform(x, y, mat);
+
+            if (opengl)
+            {
+                GL.Translate(graphicsObjectGDIP.Transform.OffsetX / bx, graphicsObjectGDIP.Transform.OffsetY / by, 0f);
+            }
         }
 
         public void TranslateTransform(float x, float y)
@@ -758,5 +822,36 @@ namespace GMap.NET.WindowsForms
         }
 
         public bool opengl { get; set; }
+
+        public SizeF MeasureString(string p, System.Drawing.Font Font)
+        {
+            //throw new NotImplementedException();
+            return new SizeF();
+        }
+
+        public void DrawImageUnscaled(Bitmap bitmap, int p1, int p2)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void DrawString(string wpno, System.Drawing.Font font, Brush brush, PointF pointF)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void DrawArc(Pen pen, float p1, float p2, float p3, float p4, float cog, float alpha)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void FillEllipse(Brush brush, Rectangle rectangle)
+        {
+           // throw new NotImplementedException();
+        }
+
+        public void FillPie(SolidBrush solidBrush, int x, int y, int widtharc, int heightarc, int p1, int p2)
+        {
+            //throw new NotImplementedException();
+        }
     }
 }

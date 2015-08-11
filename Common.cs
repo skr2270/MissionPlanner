@@ -70,7 +70,7 @@ namespace MissionPlanner
             Offset = new System.Drawing.Point(-Size.Width / 2, -Size.Height / 2 - 20);
         }
 
-        public override void OnRender(Graphics g)
+        public override void OnRender(GLGraphics g)
         {
             base.OnRender(g);
 
@@ -115,9 +115,9 @@ namespace MissionPlanner
             Size = icon.Size;
         }
 
-        public override void OnRender(Graphics g)
+        public override void OnRender(GLGraphics g)
         {
-            Matrix temp = g.Transform;
+            //Matrix temp = g.Transform;
             g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
 
             g.RotateTransform(-Overlay.Control.Bearing);
@@ -129,7 +129,7 @@ namespace MissionPlanner
             catch { }
             g.DrawImageUnscaled(icon, icon.Width / -2, icon.Height / -2);
 
-            g.Transform = temp;
+            //g.Transform = temp;
         }
     }
 
@@ -148,7 +148,7 @@ namespace MissionPlanner
             this.wpno = wpno;
         }
 
-        public override void OnRender(Graphics g)
+        public override void OnRender(GLGraphics g)
         {        
             if (selected)
             {
@@ -202,9 +202,9 @@ namespace MissionPlanner
             Size = SizeSt;
         }
 
-        public override void OnRender(Graphics g)
+        public override void OnRender(GLGraphics g)
         {
-            Matrix temp = g.Transform;
+            //Matrix temp = g.Transform;
             g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
 
             g.RotateTransform(-Overlay.Control.Bearing);
@@ -228,7 +228,7 @@ namespace MissionPlanner
             catch { }
             g.DrawImageUnscaled(global::MissionPlanner.Properties.Resources.rover, global::MissionPlanner.Properties.Resources.rover.Width / -2, global::MissionPlanner.Properties.Resources.rover.Height / -2);
 
-            g.Transform = temp;
+            //g.Transform = temp;
         }
     }
 
@@ -255,9 +255,9 @@ namespace MissionPlanner
             Size = icon.Size;
         }
 
-        public override void OnRender(Graphics g)
+        public override void OnRender(GLGraphics g)
         {
-            Matrix temp = g.Transform;
+            //Matrix temp = g.Transform;
             g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
 
             g.RotateTransform(-Overlay.Control.Bearing);
@@ -319,7 +319,7 @@ namespace MissionPlanner
             catch { }
             g.DrawImageUnscaled(icon, icon.Width / -2, icon.Height / -2);
 
-            g.Transform = temp;
+           // g.Transform = temp;
         }
     }
 
@@ -346,9 +346,9 @@ namespace MissionPlanner
             Size = icon.Size;
         }
 
-        public override void OnRender(Graphics g)
+        public override void OnRender(GLGraphics g)
         {
-            Matrix temp = g.Transform;
+            //Matrix temp = g.Transform;
             g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
 
             int length = 500;
@@ -372,7 +372,7 @@ namespace MissionPlanner
 
             g.DrawString(sysid.ToString(),new Font(FontFamily.GenericMonospace,15,FontStyle.Bold),Brushes.Red,-8,-8);
 
-            g.Transform = temp;
+            //g.Transform = temp;
         }
     }
 
@@ -397,9 +397,9 @@ namespace MissionPlanner
             Size = icon.Size;
         }
 
-        public override void OnRender(Graphics g)
+        public override void OnRender(GLGraphics g)
         {
-            Matrix temp = g.Transform;
+            //Matrix temp = g.Transform;
             g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
 
             int length = 500;
@@ -420,7 +420,7 @@ namespace MissionPlanner
             catch { }
             g.DrawImageUnscaled(icon, icon.Width / -2 + 2, icon.Height / -2);
 
-            g.Transform = temp;
+            //g.Transform = temp;
         }
     }
 
@@ -443,9 +443,9 @@ namespace MissionPlanner
             this.target = target;
         }
 
-        public override void OnRender(Graphics g)
+        public override void OnRender(GLGraphics g)
         {
-            Matrix temp = g.Transform;
+            //Matrix temp = g.Transform;
             g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
 
             int length = 500;
@@ -462,7 +462,7 @@ namespace MissionPlanner
 
             g.DrawImage(icon,-20,-20,40,40);
 
-            g.Transform = temp;
+           // g.Transform = temp;
         }
     }
 

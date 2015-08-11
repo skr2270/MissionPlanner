@@ -20,6 +20,7 @@ namespace GMap.NET.WindowsForms
    using System.Runtime.Serialization.Formatters.Binary;
    using System.Collections.Generic;
    using GMap.NET.Projections;
+    using OpenTK.Graphics.OpenGL;
 #else
    using OpenNETCF.ComponentModel;
 #endif
@@ -228,28 +229,28 @@ namespace GMap.NET.WindowsForms
 
       protected override void OnKeyDown(KeyEventArgs e)
       {
-         if(HelperLineOption == HelperLineOptions.ShowOnModifierKey)
-         {
-            renderHelperLine = (e.Modifiers == Keys.Shift || e.Modifiers == Keys.Alt);
-            if(renderHelperLine)
-            {
-               Invalidate();
-            }
-         }
-         base.OnKeyDown(e);
+          if (HelperLineOption == HelperLineOptions.ShowOnModifierKey)
+          {
+              renderHelperLine = (e.Modifiers == Keys.Shift || e.Modifiers == Keys.Alt);
+              if (renderHelperLine)
+              {
+                  Invalidate();
+              }
+          }
+          base.OnKeyDown(e);
       }
 
       protected override void OnKeyUp(KeyEventArgs e)
       {
-         if(HelperLineOption == HelperLineOptions.ShowOnModifierKey)
-         {
-            renderHelperLine = (e.Modifiers == Keys.Shift || e.Modifiers == Keys.Alt);
-            if(!renderHelperLine)
-            {
-               Invalidate();
-            }
-         }
-         base.OnKeyUp(e);
+          if (HelperLineOption == HelperLineOptions.ShowOnModifierKey)
+          {
+              renderHelperLine = (e.Modifiers == Keys.Shift || e.Modifiers == Keys.Alt);
+              if (!renderHelperLine)
+              {
+                  Invalidate();
+              }
+          }
+          base.OnKeyUp(e);
       }
 #endif
 
@@ -421,7 +422,7 @@ namespace GMap.NET.WindowsForms
 
          base.Refresh();
       }
-
+        
 #if !DESIGN
       /// <summary>
       /// enque built-in thread safe invalidation
@@ -523,10 +524,10 @@ namespace GMap.NET.WindowsForms
 #endif
           {
 #if !PocketPC
-              this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-              this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-              this.SetStyle(ControlStyles.UserPaint, true);
-              this.SetStyle(ControlStyles.Opaque, true);
+              //is.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+              //this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+              //this.SetStyle(ControlStyles.UserPaint, true);
+              //this.SetStyle(ControlStyles.Opaque, true);
               ResizeRedraw = true;
 
               TileFlipXYAttributes.SetWrapMode(WrapMode.TileFlipXY);
@@ -1355,9 +1356,28 @@ namespace GMap.NET.WindowsForms
 #if !DESIGN
       protected override void OnPaint(PaintEventArgs e)
       {
-         {
+          if (!started)
+              return;
+
+          if (this.DesignMode)
+          {
+              e.Graphics.Clear(this.BackColor);
+              e.Graphics.Flush();
+          }
+
+          if (opengl)
+          {
+              // make this gl window and thread current
+              MakeCurrent();
+
+              GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+          }
+
+        
             this.Clear(EmptyMapBackground);
 
+          {
+             
 #if !PocketPC
             if(MapRenderTransform.HasValue)
             {
@@ -1392,14 +1412,14 @@ namespace GMap.NET.WindowsForms
                {
                   #region -- rotation --
 
-                  e.Graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
-                  e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                   //this.TextRenderingHint = TextRenderingHint.AntiAlias;
+                  //this.SmoothingMode = SmoothingMode.AntiAlias;
 
-                  e.Graphics.TranslateTransform((float)(Core.Width / 2.0), (float)(Core.Height / 2.0));
-                  e.Graphics.RotateTransform(-Bearing);
-                  e.Graphics.TranslateTransform((float)(-Core.Width / 2.0), (float)(-Core.Height / 2.0));
+                  this.TranslateTransform((float)(Core.Width / 2.0), (float)(Core.Height / 2.0));
+                  this.RotateTransform(-Bearing);
+                  this.TranslateTransform((float)(-Core.Width / 2.0), (float)(-Core.Height / 2.0));
 
-                  e.Graphics.TranslateTransform(Core.renderOffset.X, Core.renderOffset.Y);
+                  this.TranslateTransform(Core.renderOffset.X, Core.renderOffset.Y);
 
                   DrawMap();
                   OnPaintOverlays();
@@ -1420,8 +1440,21 @@ namespace GMap.NET.WindowsForms
                }
             }
          }
+             
 
-         //base.OnPaint(e);
+         if (opengl)
+         {
+             this.SwapBuffers();
+
+             // free from this thread
+             Context.MakeCurrent(null);
+         }
+
+         if (!opengl)
+         {
+             e.Graphics.DrawImageUnscaled(objBitmap, 0, 0);
+         }
+         base.OnPaint(e);
       }
 #endif
 
@@ -1524,7 +1557,7 @@ namespace GMap.NET.WindowsForms
          {
             if(o.IsVisibile)
             {
-               //o.OnRender(g);
+               o.OnRender(this);
             }
          }
 
@@ -1649,7 +1682,7 @@ namespace GMap.NET.WindowsForms
       }
 
       protected override void OnSizeChanged(EventArgs e)
-      {
+      {    
          base.OnSizeChanged(e);
 #else
       protected override void OnResize(EventArgs e)
