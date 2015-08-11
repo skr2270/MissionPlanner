@@ -825,23 +825,22 @@ namespace GMap.NET.WindowsForms
 
         public SizeF MeasureString(string p, System.Drawing.Font Font)
         {
-            //throw new NotImplementedException();
-            return new SizeF();
+            return graphicsObjectGDIP.MeasureString(p, Font);
         }
 
         public void DrawImageUnscaled(Bitmap bitmap, int p1, int p2)
         {
-            //throw new NotImplementedException();
+            DrawImage(bitmap, p1, p2, bitmap.Width, bitmap.Height);
         }
 
         public void DrawString(string wpno, System.Drawing.Font font, Brush brush, PointF pointF)
         {
-            //throw new NotImplementedException();
+            drawstring(wpno, font, font.SizeInPoints, (SolidBrush)brush, pointF.X, pointF.Y);
         }
 
         public void DrawArc(Pen pen, float p1, float p2, float p3, float p4, float cog, float alpha)
         {
-            //throw new NotImplementedException();
+            DrawArc(pen, new RectangleF(p1, p2, p3, p4), cog, alpha);
         }
 
         public void FillEllipse(Brush brush, Rectangle rectangle)
