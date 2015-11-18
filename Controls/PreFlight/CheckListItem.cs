@@ -78,17 +78,19 @@ namespace MissionPlanner.Controls.PreFlight
 
             var value = GetValueObject;
 
-            if (Item.PropertyType.Name == "String")
+            if (Item.PropertyType.Name == "Single" || Item.PropertyType.Name == "Double")
             {
-                return Text.Replace("{trigger}", TriggerValue.ToString("0.##"))
-                        .Replace("{value}", value.ToString())
+                var answer = Convert.ToDouble(value);
+
+                return
+                    Text.Replace("{trigger}", TriggerValue.ToString("0.##"))
+                        .Replace("{value}", answer.ToString("0.##"))
                         .Replace("{name}", Item.Name);
             }
             else
             {
-                return
-                    Text.Replace("{trigger}", TriggerValue.ToString("0.##"))
-                        .Replace("{value}", Convert.ToDouble(value).ToString("0.##"))
+                return Text.Replace("{trigger}", TriggerValue.ToString("0.##"))
+                        .Replace("{value}", value.ToString())
                         .Replace("{name}", Item.Name);
             }
         }

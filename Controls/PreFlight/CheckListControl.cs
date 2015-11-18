@@ -83,10 +83,14 @@ namespace MissionPlanner.Controls.PreFlight
                 if (item.Name.StartsWith("utext"))
                 {
                     item.Text = data.CLItem.DisplayText();
+                    data.desc.Text = data.CLItem.Description;
                 }
                 if (item.Name.StartsWith("utickbox"))
                 {
                     var tickbox = item as CheckBox;
+                    if (data.CLItem.ConditionType != CheckListItem.Conditional.NONE)
+                        tickbox.Checked = data.CLItem.checkCond(data.CLItem);
+
                     if (tickbox.Checked)
                     {
                         data.text.ForeColor = data.CLItem._TrueColor;
