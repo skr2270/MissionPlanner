@@ -51,7 +51,12 @@ namespace MissionPlanner.Controls.PreFlight
             wrnctl.Location = new Point(x, y);
 
             if (hideforchild)
+            {
                 wrnctl.TXT_text.Visible = false;
+                wrnctl.TXT_desc.Visible = false;
+                wrnctl.CMB_colour1.Visible = false;
+                wrnctl.CMB_colour2.Visible = false;
+            }
 
             panel1.Controls.Add(wrnctl);
 

@@ -19,6 +19,15 @@ namespace MissionPlanner.Controls.PreFlight
 
         int rowcount = 0;
 
+        internal struct internaldata
+        {
+            internal Label desc;
+            internal Label text;
+            internal CheckBox tickbox;
+            internal CheckListItem CLItem;
+        }
+
+
         public CheckListControl()
         {
             InitializeComponent();
@@ -66,9 +75,28 @@ namespace MissionPlanner.Controls.PreFlight
         {
             foreach (Control item in panel1.Controls)
             {
+                if (item.Tag == null)
+                    continue;
+
+                internaldata data = (internaldata)item.Tag;
+
                 if (item.Name.StartsWith("utext"))
                 {
-                    item.Text = ((CheckListItem)item.Tag).DisplayText();
+                    item.Text = data.CLItem.DisplayText();
+                }
+                if (item.Name.StartsWith("utickbox"))
+                {
+                    var tickbox = item as CheckBox;
+                    if (tickbox.Checked)
+                    {
+                        data.text.ForeColor = data.CLItem._TrueColor;
+                        data.desc.ForeColor = data.CLItem._TrueColor;
+                    }
+                    else
+                    {
+                        data.text.ForeColor = data.CLItem._FalseColor;
+                        data.desc.ForeColor = data.CLItem._FalseColor;
+                    }
                 }
             }
         }
@@ -82,19 +110,11 @@ namespace MissionPlanner.Controls.PreFlight
             if (desctext.Length > 25 || texttext.Length > 25)
                 height = 42;
 
-            Label desc = new Label() { Text = desctext, Location = new Point(x, y), Size = new Size(150, height), Tag = item, Name = "udesc" + y };
-            Label text = new Label() { Text = texttext, Location = new Point(desc.Right, y), Size = new Size(150, height), Tag = item, Name = "utext"+y };
-            CheckBox tickbox = new CheckBox() { Checked = item.checkCond(item), Tag = item, Location = new Point(text.Right, y), Size = new Size(21, 21), Name = "utickbox" + y };
+            Label desc = new Label() { Text = desctext, Location = new Point(x, y), Size = new Size(150, height), Name = "udesc" + y };
+            Label text = new Label() { Text = texttext, Location = new Point(desc.Right, y), Size = new Size(150, height), Name = "utext" + y };
+            CheckBox tickbox = new CheckBox() { Checked = item.checkCond(item), Location = new Point(text.Right, y), Size = new Size(21, 21), Name = "utickbox" + y };
 
-            if (tickbox.Checked)
-            {
-                text.ForeColor = item._TrueColor;
-                desc.ForeColor = item._TrueColor;
-            } else
-            {
-                text.ForeColor = item._FalseColor;
-                desc.ForeColor = item._FalseColor;
-            }
+            desc.Tag = text.Tag = tickbox.Tag = new internaldata { CLItem = item, desc = desc, text = text, tickbox = tickbox };
 
             panel1.Controls.Add(desc);
             panel1.Controls.Add(text);
@@ -104,7 +124,7 @@ namespace MissionPlanner.Controls.PreFlight
 
             if (item.Child != null)
             {
-                return addwarningcontrol(x += 5, y, item.Child, true);
+                //return addwarningcontrol(x += 5, y, item.Child, true);
             }
 
             return desc;
@@ -145,6 +165,7 @@ namespace MissionPlanner.Controls.PreFlight
         {
             CheckListEditor form = new CheckListEditor(this);
             form.Show();
+            rowcount = 0;
         }
 
         private void timer1_Tick(object sender, EventArgs e)

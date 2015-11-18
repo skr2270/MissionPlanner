@@ -66,8 +66,8 @@ namespace MissionPlanner.Controls.PreFlight
         public TextBox TXT_text;
         private Controls.MyButton but_addchild;
         private Controls.MyButton but_remove;
-        private ComboBox CMB_colour1;
-        private ComboBox CMB_colour2;
+        public ComboBox CMB_colour1;
+        public ComboBox CMB_colour2;
         public TextBox TXT_desc;
         private ComboBox CMB_Source;
 
