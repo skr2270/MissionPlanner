@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Collections;
 
 namespace MissionPlanner.Controls.PreFlight
 {
@@ -15,6 +16,8 @@ namespace MissionPlanner.Controls.PreFlight
         public List<CheckListItem> CheckListItems = new List<CheckListItem>();
 
         public string configfile = "checklist.xml";
+
+        int rowcount = 0;
 
         public CheckListControl()
         {
@@ -36,10 +39,14 @@ namespace MissionPlanner.Controls.PreFlight
 
         public void Draw()
         {
+            if (rowcount == this.CheckListItems.Count)
+                return;
+
             panel1.SuspendLayout();
             panel1.Controls.Clear();
 
             int y = 0;
+            rowcount = 0;
 
             lock (this.CheckListItems)
             {
@@ -47,24 +54,46 @@ namespace MissionPlanner.Controls.PreFlight
                 {
                     var wrnctl = addwarningcontrol(5, y, item);
 
+                    rowcount++;
+
                     y = wrnctl.Bottom;
                 }
             }
-            panel1.ResumeLayout();
+            panel1.ResumeLayout(true);
+        }
+
+        void UpdateDisplay()
+        {
+            foreach (Control item in panel1.Controls)
+            {
+                if (item.Name.StartsWith("utext"))
+                {
+                    item.Text = ((CheckListItem)item.Tag).DisplayText();
+                }
+            }
         }
 
         Control addwarningcontrol(int x, int y, CheckListItem item, bool hideforchild = false)
         {
-            Label desc = new Label() { Text = item.Description, Location = new Point(x, y), Size = new Size(150, 42) };
-            Label text = new Label() { Text = item.DisplayText(), Location = new Point(desc.Right, y), Size = new Size(150, 42) };
-            CheckBox tickbox = new CheckBox() { Checked = item.checkCond(item), Tag = item, Location = new Point(text.Right, y) };
+            var desctext = item.Description;
+            var texttext = item.DisplayText();
+
+            var height = 21;
+            if (desctext.Length > 25 || texttext.Length > 25)
+                height = 42;
+
+            Label desc = new Label() { Text = desctext, Location = new Point(x, y), Size = new Size(150, height), Tag = item, Name = "udesc" + y };
+            Label text = new Label() { Text = texttext, Location = new Point(desc.Right, y), Size = new Size(150, height), Tag = item, Name = "utext"+y };
+            CheckBox tickbox = new CheckBox() { Checked = item.checkCond(item), Tag = item, Location = new Point(text.Right, y), Size = new Size(21, 21), Name = "utickbox" + y };
 
             if (tickbox.Checked)
             {
                 text.ForeColor = item._TrueColor;
+                desc.ForeColor = item._TrueColor;
             } else
             {
                 text.ForeColor = item._FalseColor;
+                desc.ForeColor = item._FalseColor;
             }
 
             panel1.Controls.Add(desc);
@@ -121,6 +150,7 @@ namespace MissionPlanner.Controls.PreFlight
         private void timer1_Tick(object sender, EventArgs e)
         {
             Draw();
+            UpdateDisplay();
         }
     }
 }
