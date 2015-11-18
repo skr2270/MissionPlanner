@@ -76,10 +76,21 @@ namespace MissionPlanner.Controls.PreFlight
             if (Item == null)
                 return "";
 
-            return
-                Text.Replace("{trigger}", TriggerValue.ToString("0.##"))
-                    .Replace("{value}", GetValue.ToString("0.##"))
-                    .Replace("{name}", Item.Name);
+            var value = GetValueObject;
+
+            if (Item.PropertyType.Name == "String")
+            {
+                return Text.Replace("{trigger}", TriggerValue.ToString("0.##"))
+                        .Replace("{value}", value.ToString())
+                        .Replace("{name}", Item.Name);
+            }
+            else
+            {
+                return
+                    Text.Replace("{trigger}", TriggerValue.ToString("0.##"))
+                        .Replace("{value}", Convert.ToDouble(value).ToString("0.##"))
+                        .Replace("{name}", Item.Name);
+            }
         }
 
         /// <summary>
@@ -98,6 +109,22 @@ namespace MissionPlanner.Controls.PreFlight
                     return 0;
 
                 return (double)Convert.ChangeType(Item.GetValue(defaultsrc, null), typeof(double));
+            }
+        }
+
+        /// <summary>
+        /// Get the current value
+        /// </summary>
+        public object GetValueObject
+        {
+            get
+            {
+                if (defaultsrc == null)
+                    throw new ArgumentNullException("src");
+                if (Item == null)
+                    throw new ArgumentNullException("Item");
+
+                return Item.GetValue(defaultsrc, null);
             }
         }
 
