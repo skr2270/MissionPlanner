@@ -39,6 +39,7 @@
             this.backstageView.HighlightColor2 = System.Drawing.SystemColors.MenuHighlight;
             this.backstageView.Name = "backstageView";
             this.backstageView.WidthMenu = 172;
+            this.backstageView.Load += new System.EventHandler(this.backstageView_Load);
             // 
             // SoftwareConfig
             // 

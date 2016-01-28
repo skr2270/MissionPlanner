@@ -193,7 +193,7 @@
     <value>Auto przes.</value>
   </data>
   <data name="BUT_joystick.Text" xml:space="preserve">
-    <value>Joystick</value>
+    <value>Pilot Payload Controller</value>
   </data>
   <data name="Zoomlevel.ToolTip" xml:space="preserve">
     <value>Zmień stopień powiększenia</value>

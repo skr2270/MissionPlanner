@@ -8,9 +8,34 @@ using log4net;
 using MissionPlanner.Attributes;
 using MissionPlanner;
 using System.Collections;
+using System.Linq;
 
 namespace MissionPlanner
 {
+    public class MovingAverage              //UAVS
+    {
+        private Queue<double> sampleList = new Queue<double>();
+        private int maxListSize;
+
+        // Constructor
+        public MovingAverage(int numSamples)
+        {
+            Queue<double> sampleList = new Queue<double>();
+            maxListSize = numSamples;
+        }
+
+        public void AddSample(double sample)
+        {
+            if (sampleList.Count == maxListSize) sampleList.Dequeue();
+            sampleList.Enqueue(sample);
+        }
+
+        public double Average 
+        {
+            get { if (sampleList.Count == 0) return 0; return sampleList.Average(); } 
+        }
+    }
+
     public class CurrentState : ICloneable
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -1421,5 +1446,11 @@ namespace MissionPlanner
         public short opt_y { get; set; }
         [DisplayText("flow quality")]
         public byte opt_qua { get; set; }
+
+        public int RPM { get; set; }                //UAVS
+        public int TPS { get; set; }                //UAVS
+        public int FuelLevel { get { return (int)_FuelLevel.Average; } set { _FuelLevel.AddSample(value); } }                //UAVS
+
+        private MovingAverage _FuelLevel = new MovingAverage(20);
     }
 }

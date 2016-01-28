@@ -193,7 +193,7 @@
     <value>Auto Pan</value>
   </data>
   <data name="BUT_joystick.Text" xml:space="preserve">
-    <value>Joystick</value>
+    <value>Pilot Payload Controller</value>
   </data>
   <data name="Zoomlevel.ToolTip" xml:space="preserve">
     <value>Cambiar nivel de Zoom</value>

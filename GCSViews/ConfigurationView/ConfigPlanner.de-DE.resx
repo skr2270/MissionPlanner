@@ -193,7 +193,7 @@
     <value>UI Sprache</value>
   </data>
   <data name="label96.Text" xml:space="preserve">
-    <value>Joystick</value>
+    <value>Pilot Payload Controller</value>
   </data>
   <data name="CHK_GDIPlus.Text" xml:space="preserve">
     <value>GDI+ (old type)</value>
@@ -211,7 +211,7 @@
     <value>Sprache</value>
   </data>
   <data name="BUT_Joystick.Text" xml:space="preserve">
-    <value>Joystick Setup</value>
+    <value>Pilot Payload Controller Setup</value>
   </data>
   <data name="CHK_disttohomeflightdata.Text" xml:space="preserve">
     <value>Flugdatenanzeige</value>

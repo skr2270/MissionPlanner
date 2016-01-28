@@ -31,14 +31,11 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InitialSetup));
             this.backstageView = new MissionPlanner.Controls.BackstageView.BackstageView();
-            this.backstageViewPagehwbt = new MissionPlanner.Controls.BackstageView.BackstageViewPage();
             this.backstageViewPagefw = new MissionPlanner.Controls.BackstageView.BackstageViewPage();
             this.initialSetupBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.configFirmware1 = new MissionPlanner.GCSViews.ConfigurationView.ConfigFirmware();
             this.backstageViewPagefwdisabled = new MissionPlanner.Controls.BackstageView.BackstageViewPage();
             this.configFirmwareDisabled1 = new MissionPlanner.GCSViews.ConfigurationView.ConfigFirmwareDisabled();
-            this.backstageViewPagewizard = new MissionPlanner.Controls.BackstageView.BackstageViewPage();
-            this.configWizard1 = new MissionPlanner.GCSViews.ConfigurationView.ConfigWizard();
             this.backstageViewPagemand = new MissionPlanner.Controls.BackstageView.BackstageViewPage();
             this.configMandatory1 = new MissionPlanner.GCSViews.ConfigurationView.ConfigMandatory();
             this.backstageViewPagetradheli = new MissionPlanner.Controls.BackstageView.BackstageViewPage();
@@ -81,8 +78,10 @@
             this.tracker1 = new MissionPlanner.Antenna.Tracker();
             this.backstageViewPageMotorTest = new MissionPlanner.Controls.BackstageView.BackstageViewPage();
             this.configMotor1 = new MissionPlanner.GCSViews.ConfigurationView.ConfigMotorTest();
-            this.backstageViewPageinstfw = new MissionPlanner.Controls.BackstageView.BackstageViewPage();
+            this.backstageViewPagehwbt = new MissionPlanner.Controls.BackstageView.BackstageViewPage();
             this.configHWBT1 = new MissionPlanner.GCSViews.ConfigurationView.ConfigHWBT();
+            this.configWizard1 = new MissionPlanner.GCSViews.ConfigurationView.ConfigWizard();
+            this.backstageViewPageinstfw = new MissionPlanner.Controls.BackstageView.BackstageViewPage();
             ((System.ComponentModel.ISupportInitialize)(this.initialSetupBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -94,7 +93,6 @@
             this.backstageView.Name = "backstageView";
             this.backstageView.Pages.Add(this.backstageViewPagefw);
             this.backstageView.Pages.Add(this.backstageViewPagefwdisabled);
-            this.backstageView.Pages.Add(this.backstageViewPagewizard);
             this.backstageView.Pages.Add(this.backstageViewPagemand);
             this.backstageView.Pages.Add(this.backstageViewPagetradheli);
             this.backstageView.Pages.Add(this.backstageViewPageframetype);
@@ -118,16 +116,7 @@
             this.backstageView.Pages.Add(this.backstageViewPageMotorTest);
             this.backstageView.Pages.Add(this.backstageViewPagehwbt);
             this.backstageView.WidthMenu = 172;
-            // 
-            // backstageViewPagehwbt
-            // 
-            this.backstageViewPagehwbt.Advanced = false;
-            this.backstageViewPagehwbt.LinkText = "Bluetooth Setup";
-            this.backstageViewPagehwbt.Page = this.configHWBT1;
-            this.backstageViewPagehwbt.Parent = this.backstageViewPageopt;
-            this.backstageViewPagehwbt.Show = true;
-            this.backstageViewPagehwbt.Spacing = 30;
-            resources.ApplyResources(this.backstageViewPagehwbt, "backstageViewPagehwbt");
+            this.backstageView.Load += new System.EventHandler(this.backstageView_Load);
             // 
             // backstageViewPagefw
             // 
@@ -164,21 +153,6 @@
             // 
             resources.ApplyResources(this.configFirmwareDisabled1, "configFirmwareDisabled1");
             this.configFirmwareDisabled1.Name = "configFirmwareDisabled1";
-            // 
-            // backstageViewPagewizard
-            // 
-            this.backstageViewPagewizard.Advanced = false;
-            this.backstageViewPagewizard.LinkText = "Wizard";
-            this.backstageViewPagewizard.Page = this.configWizard1;
-            this.backstageViewPagewizard.Parent = null;
-            this.backstageViewPagewizard.Show = true;
-            this.backstageViewPagewizard.Spacing = 30;
-            resources.ApplyResources(this.backstageViewPagewizard, "backstageViewPagewizard");
-            // 
-            // configWizard1
-            // 
-            resources.ApplyResources(this.configWizard1, "configWizard1");
-            this.configWizard1.Name = "configWizard1";
             // 
             // backstageViewPagemand
             // 
@@ -511,6 +485,26 @@
             resources.ApplyResources(this.configMotor1, "configMotor1");
             this.configMotor1.Name = "configMotor1";
             // 
+            // backstageViewPagehwbt
+            // 
+            this.backstageViewPagehwbt.Advanced = false;
+            this.backstageViewPagehwbt.LinkText = "Bluetooth Setup";
+            this.backstageViewPagehwbt.Page = this.configHWBT1;
+            this.backstageViewPagehwbt.Parent = this.backstageViewPageopt;
+            this.backstageViewPagehwbt.Show = true;
+            this.backstageViewPagehwbt.Spacing = 30;
+            resources.ApplyResources(this.backstageViewPagehwbt, "backstageViewPagehwbt");
+            // 
+            // configHWBT1
+            // 
+            resources.ApplyResources(this.configHWBT1, "configHWBT1");
+            this.configHWBT1.Name = "configHWBT1";
+            // 
+            // configWizard1
+            // 
+            resources.ApplyResources(this.configWizard1, "configWizard1");
+            this.configWizard1.Name = "configWizard1";
+            // 
             // backstageViewPageinstfw
             // 
             this.backstageViewPageinstfw.Advanced = false;
@@ -521,11 +515,6 @@
             this.backstageViewPageinstfw.Show = false;
             this.backstageViewPageinstfw.Spacing = 30;
             resources.ApplyResources(this.backstageViewPageinstfw, "backstageViewPageinstfw");
-            // 
-            // configHWBT1
-            // 
-            resources.ApplyResources(this.configHWBT1, "configHWBT1");
-            this.configHWBT1.Name = "configHWBT1";
             // 
             // InitialSetup
             // 
@@ -569,7 +558,6 @@
         private ConfigurationView.ConfigMotorTest configMotor1;
         private Antenna.Tracker tracker1;
         private Controls.BackstageView.BackstageViewPage backstageViewPageinstfw;
-        private Controls.BackstageView.BackstageViewPage backstageViewPagewizard;
         private Controls.BackstageView.BackstageViewPage backstageViewPagemand;
         private Controls.BackstageView.BackstageViewPage backstageViewPageopt;
         private Controls.BackstageView.BackstageViewPage backstageViewPagetradheli;

@@ -95,6 +95,12 @@
             this.CHK_showairports = new System.Windows.Forms.CheckBox();
             this.chk_ADSB = new System.Windows.Forms.CheckBox();
             this.chk_tfr = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBox_externalCommandsAddress = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.CHK_enableExternalCommands = new System.Windows.Forms.CheckBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.myLabel1 = new MissionPlanner.Controls.MyLabel();
             ((System.ComponentModel.ISupportInitialize)(this.NUM_tracklength)).BeginInit();
             this.SuspendLayout();
             // 
@@ -507,6 +513,7 @@
             // 
             resources.ApplyResources(this.txt_log_dir, "txt_log_dir");
             this.txt_log_dir.Name = "txt_log_dir";
+            this.txt_log_dir.TextChanged += new System.EventHandler(this.txt_log_dir_TextChanged);
             // 
             // BUT_logdirbrowse
             // 
@@ -614,10 +621,50 @@
             this.chk_tfr.UseVisualStyleBackColor = true;
             this.chk_tfr.CheckedChanged += new System.EventHandler(this.chk_tfr_CheckedChanged);
             // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // textBox_externalCommandsAddress
+            // 
+            resources.ApplyResources(this.textBox_externalCommandsAddress, "textBox_externalCommandsAddress");
+            this.textBox_externalCommandsAddress.Name = "textBox_externalCommandsAddress";
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // CHK_enableExternalCommands
+            // 
+            resources.ApplyResources(this.CHK_enableExternalCommands, "CHK_enableExternalCommands");
+            this.CHK_enableExternalCommands.Name = "CHK_enableExternalCommands";
+            this.CHK_enableExternalCommands.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            resources.ApplyResources(this.textBox1, "textBox1");
+            this.textBox1.Name = "textBox1";
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // myLabel1
+            // 
+            resources.ApplyResources(this.myLabel1, "myLabel1");
+            this.myLabel1.Name = "myLabel1";
+            this.myLabel1.resize = false;
+            this.myLabel1.Click += new System.EventHandler(this.myLabel1_Click);
+            // 
             // ConfigPlanner
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.myLabel1);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.CHK_enableExternalCommands);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.textBox_externalCommandsAddress);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.chk_tfr);
             this.Controls.Add(this.chk_ADSB);
             this.Controls.Add(this.CHK_showairports);
@@ -760,5 +807,11 @@
         private System.Windows.Forms.CheckBox CHK_showairports;
         private System.Windows.Forms.CheckBox chk_ADSB;
         private System.Windows.Forms.CheckBox chk_tfr;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBox_externalCommandsAddress;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckBox CHK_enableExternalCommands;
+        private System.Windows.Forms.TextBox textBox1;
+        private Controls.MyLabel myLabel1;
     }
 }

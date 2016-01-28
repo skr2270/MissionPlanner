@@ -211,7 +211,7 @@
     <value>MJPEG-Quelle wählen</value>
   </data>
   <data name="BUT_joystick.Text" xml:space="preserve">
-    <value>Joystick</value>
+    <value>Pilot Payload Controller</value>
   </data>
   <data name="Zoomlevel.ToolTip" xml:space="preserve">
     <value>Vergrösserung ändern</value>
@@ -268,7 +268,7 @@
     <value>Log laden</value>
   </data>
   <data name="BUT_joystick.ToolTip" xml:space="preserve">
-    <value>Joystick einstellen und akttivieren</value>
+    <value>Pilot Payload Controller einstellen und akttivieren</value>
   </data>
   <data name="BUT_Homealt.ToolTip" xml:space="preserve">
     <value>Aktuelle Startplatzhöhe als Null setzen</value>

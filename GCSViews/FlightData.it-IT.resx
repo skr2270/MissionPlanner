@@ -214,7 +214,7 @@
     <value>Setta sorgente MJPEG </value>
   </data>
   <data name="BUT_joystick.Text" xml:space="preserve">
-    <value>Joystick</value>
+    <value>Pilot Payload Controller</value>
   </data>
   <data name="Zoomlevel.ToolTip" xml:space="preserve">
     <value>Cambia Livello di Zoom</value>
@@ -271,7 +271,7 @@
     <value>Carica Log</value>
   </data>
   <data name="BUT_joystick.ToolTip" xml:space="preserve">
-    <value>Configura e attiva Joystick</value>
+    <value>Configura e attiva Pilot Payload Controller</value>
   </data>
   <data name="BUT_Homealt.ToolTip" xml:space="preserve">
     <value>Imposta l'altezza visualizzata a 0, Es.: L'altezza della home è 0</value>

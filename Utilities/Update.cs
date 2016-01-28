@@ -156,7 +156,7 @@ new System.Net.Security.RemoteCertificateValidationCallback((sender, certificate
                     // get it
                 }
             }
-
+            return;     //UAVSMOD
             if (updateFound)
             {
                 // do the update in the main thread
