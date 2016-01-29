@@ -1516,45 +1516,45 @@ namespace GMap.NET.WindowsForms
          }
          set
          {
-            //if(Core.bearing != value)
-            //{
-            //   bool resize = Core.bearing == 0;
-            //   Core.bearing = value;
+            if(Core.bearing != value)
+            {
+               bool resize = Core.bearing == 0;
+               Core.bearing = value;
 
-            //   //if(VirtualSizeEnabled)
-            //   //{
-            //   //   c.X += (Width - Core.vWidth) / 2;
-            //   //   c.Y += (Height - Core.vHeight) / 2;
-            //   //}
+               //if(VirtualSizeEnabled)
+               //{
+               //   c.X += (Width - Core.vWidth) / 2;
+               //   c.Y += (Height - Core.vHeight) / 2;
+               //}
 
-            //   UpdateRotationMatrix();
+               UpdateRotationMatrix();
 
-            //   if(value != 0 && value % 360 != 0)
-            //   {
-            //      Core.IsRotated = true;
+               if(value != 0 && value % 360 != 0)
+               {
+                  Core.IsRotated = true;
 
-            //      if(Core.tileRectBearing.Size == Core.tileRect.Size)
-            //      {
-            //         Core.tileRectBearing = Core.tileRect;
-            //         Core.tileRectBearing.Inflate(1, 1);
-            //      }
-            //   }
-            //   else
-            //   {
-            //      Core.IsRotated = false;
-            //      Core.tileRectBearing = Core.tileRect;
-            //   }
+                  if(Core.tileRectBearing.Size == Core.tileRect.Size)
+                  {
+                     Core.tileRectBearing = Core.tileRect;
+                     Core.tileRectBearing.Inflate(1, 1);
+                  }
+               }
+               else
+               {
+                  Core.IsRotated = false;
+                  Core.tileRectBearing = Core.tileRect;
+               }
 
-            //   if(resize)
-            //   {
-            //      Core.OnMapSizeChanged(Width, Height);
-            //   }
+               if(resize)
+               {
+                  Core.OnMapSizeChanged(Width, Height);
+               }
 
-            //   if(!HoldInvalidation && Core.IsStarted)
-            //   {
-            //      ForceUpdateOverlays();
-            //   }
-            //}
+               if(!HoldInvalidation && Core.IsStarted)
+               {
+                  ForceUpdateOverlays();
+               }
+            }
          }
       }
 #endif

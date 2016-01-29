@@ -24,6 +24,9 @@ namespace MissionPlanner.Controls
 {
     public class HUD : GLControl
     {
+        public DateTime MissionStartTime = DateTime.MinValue;
+        public DateTime MissionPauseTime = DateTime.MinValue;
+
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         object paintlock = new object();
         object streamlock = new object();
@@ -370,7 +373,7 @@ namespace MissionPlanner.Controls
         {
             //GL.Enable(EnableCap.AlphaTest)
 
-           // Console.WriteLine("hud paint");
+           //Console.WriteLine("hud paint");
 
            // Console.WriteLine("hud ms " + (DateTime.Now.Millisecond));
 
@@ -1320,6 +1323,8 @@ namespace MissionPlanner.Controls
                 {
                     drawstring(graphicsObject, "AS " + _airspeed.ToString("0.0"), font, fontsize, whiteBrush, 1, scrollbg.Bottom + 5);
                 }
+                drawstring(graphicsObject, "Airspeed", font, fontsize - 8, (SolidBrush)Brushes.Green, scrollbg.Left, scrollbg.Top);             // UAVSMOD-28
+
 
                 if (_lowgroundspeed)
                 {
@@ -1339,6 +1344,8 @@ namespace MissionPlanner.Controls
                 graphicsObject.DrawRectangle(whitePen, scrollbg);
 
                 graphicsObject.FillRectangle(solidBrush, scrollbg);
+
+                drawstring(graphicsObject, "Altitude", font, fontsize - 8, (SolidBrush)Brushes.Green, scrollbg.Left + 2, scrollbg.Top);         // UAVSMOD-28
 
                 arrow = new Point[5];
 
@@ -1509,8 +1516,8 @@ namespace MissionPlanner.Controls
                         drawstring(graphicsObject, text, font, fontsize + 2, whiteBrush, fontsize, this.Height - 30 - fontoffset);
                     }
                 }
-                // gps
 
+                // gps
                 string gps = "";
                 SolidBrush col = whiteBrush;
 
@@ -1547,6 +1554,7 @@ namespace MissionPlanner.Controls
                     drawstring(graphicsObject, "NaN Error " + DateTime.Now, font, this.Height / 30 + 10, (SolidBrush)Brushes.Red, 50, 50);
 
                 // custom user items
+                SolidBrush userColor = (SolidBrush)Brushes.Salmon;         //UAVS
                 graphicsObject.ResetTransform();
                 int height = this.Height - 30 - fontoffset - fontsize - 8;
                 foreach (string key in CustomItems.Keys)
@@ -1558,11 +1566,11 @@ namespace MissionPlanner.Controls
                             continue;
                         if (item.Item.Name.Contains("lat") || item.Item.Name.Contains("lng")) 
                         {
-                            drawstring(graphicsObject, item.Header + item.GetValue.ToString("0.#######"), font, fontsize + 2, whiteBrush, this.Width / 8, height);
+                            drawstring(graphicsObject, item.Header + item.GetValue.ToString("0.#######"), font, fontsize + 2, userColor, this.Width / 8, height);
                         }
                         else if (item.Item.Name == "battery_usedmah")
                         {
-                            drawstring(graphicsObject, item.Header + item.GetValue.ToString("0"), font, fontsize + 2, whiteBrush, this.Width / 8, height);
+                            drawstring(graphicsObject, item.Header + item.GetValue.ToString("0"), font, fontsize + 2, userColor, this.Width / 8, height);
                         }
                         else if (item.Item.Name == "timeInAir")
                         {
@@ -1572,11 +1580,11 @@ namespace MissionPlanner.Controls
                             int mins = (int)(stime / (60)) % 60;
                             //stime = mins * 60;
                             int secs = (int)(stime % 60);
-                            drawstring(graphicsObject, item.Header + hrs.ToString("00") + ":" + mins.ToString("00") + ":" + secs.ToString("00"), font, fontsize + 2, whiteBrush, this.Width / 8, height);
+                            drawstring(graphicsObject, item.Header + hrs.ToString("00") + ":" + mins.ToString("00") + ":" + secs.ToString("00"), font, fontsize + 2, userColor, this.Width / 8, height);
                         }
                         else
                         {
-                            drawstring(graphicsObject, item.Header + item.GetValue.ToString("0.##"), font, fontsize + 2, whiteBrush, this.Width / 8, height);
+                            drawstring(graphicsObject, item.Header + item.GetValue.ToString("0.##"), font, fontsize + 2, userColor, this.Width / 8, height);
                         }
                         height -= fontsize+5;
                     }

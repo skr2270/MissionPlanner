@@ -2452,7 +2452,7 @@ namespace MissionPlanner.GCSViews
                 if (item is GMapMarkerRect)
                 {
                     GMapMarkerRect rc = item as GMapMarkerRect;
-                    rc.Pen.Color = Color.Red;
+                    rc.Pen.Color = Color.Blue;      //wbarker
                     MainMap.Invalidate(false);
 
                     int answer;
@@ -4541,7 +4541,7 @@ namespace MissionPlanner.GCSViews
 
 
 
-                int todo;
+                //int todo;
                 // todo
                 // split up pull area to smaller chunks
 
@@ -5831,6 +5831,16 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     CustomMessageBox.Show(Strings.ERROR + "\n" + ex.ToString(), Strings.ERROR);
                 }
             }
+        }
+
+        private void MainMap_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MainMap_OnMarkerEnter_1(GMapMarker item)
+        {
+
         }
     }
 }

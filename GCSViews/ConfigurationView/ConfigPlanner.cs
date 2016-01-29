@@ -580,6 +580,8 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 
             // this can't fail because it set at startup
             NUM_tracklength.Value = int.Parse(MainV2.config["NUM_tracklength"].ToString());
+            textBox1.Text = MainV2.config["ECU_ComPort"].ToString();        //UAVS
+            MainV2.comPort.ECUport = textBox1.Text;
 
             // get wps on connect
             SetCheckboxFromConfig("loadwpsonconnect", CHK_loadwponconnect);
@@ -769,8 +771,29 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 
         private void CHK_advancedview_CheckedChanged(object sender, EventArgs e)
         {
+            if (CHK_advancedview.Checked)       // prompt for a password when the user checks this box
+            {
+                if (MainV2.Advanced == CHK_advancedview.Checked) return;
+                string password = "";
+                if (System.Windows.Forms.DialogResult.Cancel == InputBox.Show("Password", "Please enter password for advanced menus", ref password) | 
+                    (password != "password"))
+                {
+                    CHK_advancedview.Checked = false;
+                    return;
+                }
+            }
+
             MainV2.config["advancedview"] = CHK_advancedview.Checked.ToString();
             MainV2.Advanced = CHK_advancedview.Checked;
+
+            // refresh config window if needed
+            if (MainV2.MyView.current != null)
+            {
+                if (MainV2.MyView.current.Name == "HWConfig")
+                    MainV2.MyView.ShowScreen("HWConfig");
+                if (MainV2.MyView.current.Name == "SWConfig")
+                    MainV2.MyView.ShowScreen("SWConfig");
+            }
         }
 
         private void CHK_showairports_CheckedChanged(object sender, EventArgs e)
@@ -809,6 +832,23 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         {
             MainV2.config["showtfr"] = chk_tfr.Checked.ToString();
             MainV2.ShowTFR = chk_tfr.Checked;
+        }
+
+        private void txt_log_dir_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            //CurrentState.MinRawFuelLevel = textBox1.Text.ToFloat();
+            MainV2.config["ECU_ComPort"] = textBox1.Text;
+            MainV2.comPort.ECUport = textBox1.Text;
+        }
+
+        private void myLabel1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

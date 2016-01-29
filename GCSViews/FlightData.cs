@@ -442,23 +442,50 @@ namespace MissionPlanner.GCSViews
         }
 
         private void MainV2_AdvancedChanged(object sender, EventArgs e)
-        {
+        {   
+            // if we just add and remove the tabs we need, they get out of the expected order, so I remove all and add back in the order needed
+            tabControlactions.TabPages.Remove(tabQuick);
+            tabControlactions.TabPages.Remove(tabActions);
+            tabControlactions.TabPages.Remove(tabActionsSimple);
+            tabControlactions.TabPages.Remove(tabGauges);
+            tabControlactions.TabPages.Remove(tabStatus);
+            tabControlactions.TabPages.Remove(tabServo);
+            tabControlactions.TabPages.Remove(tabTLogs);
+            tabControlactions.TabPages.Remove(tablogbrowse);
+            tabControlactions.TabPages.Remove(tabScripts);
+            tabControlactions.TabPages.Remove(tabPagemessages);
+
             if (!MainV2.Advanced)
             {
+                tabControlactions.TabPages.Add(tabActionsSimple);
+                tabControlactions.TabPages.Add(tabPagemessages);
+
+                /*
                 if (!tabControlactions.TabPages.Contains(tabActionsSimple))
                     tabControlactions.TabPages.Add(tabActionsSimple);
-                //tabControlactions.TabPages.Remove(tabGauges);
+                tabControlactions.TabPages.Remove(tabGauges);
+                tabControlactions.TabPages.Remove(tabTLogs);
+                tabControlactions.TabPages.Remove(tablogbrowse);
+                tabControlactions.TabPages.Remove(tabQuick);
                 tabControlactions.TabPages.Remove(tabActions);
                 tabControlactions.TabPages.Remove(tabStatus);
                 tabControlactions.TabPages.Remove(tabServo);
-                tabControlactions.TabPages.Remove(tabScripts);
+                tabControlactions.TabPages.Remove(tabScripts); 
+                 */
 
-                tabControlactions.Invalidate();
             }
             else
             {
-                //tabControlactions.TabPages.Remove(tabGauges);
-                tabControlactions.TabPages.Remove(tabActionsSimple);
+                tabControlactions.TabPages.Add(tabQuick);
+                tabControlactions.TabPages.Add(tabActions);
+                tabControlactions.TabPages.Add(tabGauges);
+                tabControlactions.TabPages.Add(tabStatus);
+                tabControlactions.TabPages.Add(tabServo);
+                tabControlactions.TabPages.Add(tabTLogs);
+                tabControlactions.TabPages.Add(tablogbrowse);
+                tabControlactions.TabPages.Add(tabScripts);
+                tabControlactions.TabPages.Add(tabPagemessages);
+/*
                 if (!tabControlactions.TabPages.Contains(tabActions))
                     tabControlactions.TabPages.Add(tabActions);
                 if (!tabControlactions.TabPages.Contains(tabStatus))
@@ -466,8 +493,10 @@ namespace MissionPlanner.GCSViews
                 if (!tabControlactions.TabPages.Contains(tabServo))
                     tabControlactions.TabPages.Add(tabServo);
                 if (!tabControlactions.TabPages.Contains(tabScripts))
-                    tabControlactions.TabPages.Add(tabScripts);
+                    tabControlactions.TabPages.Add(tabScripts);*/
             }
+            tabControlactions.Invalidate();
+
         }
 
         public void Activate()
@@ -1767,7 +1796,7 @@ namespace MissionPlanner.GCSViews
                     marker = new GMapMarkerRect(point);
                     marker.ToolTip = new GMapToolTip(marker);
                     marker.ToolTipMode = MarkerTooltipMode.Always;
-                    marker.ToolTipText = "Dist to Home: " + ((gMapControl1.MapProvider.Projection.GetDistance(point, MainV2.comPort.MAV.cs.HomeLocation.Point()) * 1000) * CurrentState.multiplierdist).ToString("0");
+                    marker.ToolTipText = "Dist to Home-- " + ((gMapControl1.MapProvider.Projection.GetDistance(point, MainV2.comPort.MAV.cs.HomeLocation.Point()) * 1000) * CurrentState.multiplierdist).ToString("0");
 
                     routes.Markers.Add(marker);
                 }
@@ -1989,6 +2018,7 @@ namespace MissionPlanner.GCSViews
 
         private void BUT_setwp_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("selected index = {0}", CMB_setwp.SelectedIndex);
             try
             {
                 ((Button)sender).Enabled = false;
@@ -2007,7 +2037,7 @@ namespace MissionPlanner.GCSViews
             if (MainV2.comPort.MAV.param["CMD_TOTAL"] != null)
             {
                 int wps = int.Parse(MainV2.comPort.MAV.param["CMD_TOTAL"].ToString());
-                for (int z = 1; z <= wps; z++)
+                for (int z = 1; z < wps; z++)
                 {
                     CMB_setwp.Items.Add(z.ToString());
                 }
@@ -2016,7 +2046,7 @@ namespace MissionPlanner.GCSViews
             if (MainV2.comPort.MAV.param["WP_TOTAL"] != null)
             {
                 int wps = int.Parse(MainV2.comPort.MAV.param["WP_TOTAL"].ToString());
-                for (int z = 1; z <= wps; z++)
+                for (int z = 1; z < wps; z++)
                 {
                     CMB_setwp.Items.Add(z.ToString());
                 }
@@ -2025,7 +2055,7 @@ namespace MissionPlanner.GCSViews
             if (MainV2.comPort.MAV.param["MIS_TOTAL"] != null)
             {
                 int wps = int.Parse(MainV2.comPort.MAV.param["MIS_TOTAL"].ToString());
-                for (int z = 1; z <= wps; z++)
+                for (int z = 1; z < wps; z++)
                 {
                     CMB_setwp.Items.Add(z.ToString());
                 }
@@ -2034,6 +2064,12 @@ namespace MissionPlanner.GCSViews
 
         private void BUT_quickauto_Click(object sender, EventArgs e)
         {
+            if (!MainV2.comPort.BaseStream.IsOpen && !MainV2.comPort.logreadmode)
+            {
+                CustomMessageBox.Show("Please connect first");
+                return;
+            }
+
             try
             {
                 ((Button)sender).Enabled = false;
@@ -2045,6 +2081,12 @@ namespace MissionPlanner.GCSViews
 
         private void BUT_quickrtl_Click(object sender, EventArgs e)
         {
+            if (!MainV2.comPort.BaseStream.IsOpen && !MainV2.comPort.logreadmode)
+            {
+                CustomMessageBox.Show("Please connect first");
+                return;
+            }
+
             try
             {
                 ((Button)sender).Enabled = false;
@@ -2056,6 +2098,12 @@ namespace MissionPlanner.GCSViews
 
         private void BUT_quickmanual_Click(object sender, EventArgs e)
         {
+            if (!MainV2.comPort.BaseStream.IsOpen && !MainV2.comPort.logreadmode)
+            {
+                CustomMessageBox.Show("Please connect first");
+                return;
+            }
+
             try
             {
                 ((Button)sender).Enabled = false;
@@ -2926,6 +2974,12 @@ namespace MissionPlanner.GCSViews
 
         private void BUT_ARM_Click(object sender, EventArgs e)
         {
+            if (!MainV2.comPort.BaseStream.IsOpen && !MainV2.comPort.logreadmode)
+            {
+                CustomMessageBox.Show("Please connect first");
+                this.Close();
+            }
+
             if (!MainV2.comPort.BaseStream.IsOpen)
                 return;
 
@@ -3328,5 +3382,237 @@ namespace MissionPlanner.GCSViews
             //thisthread.Join();
         }
 
+        private void BUT_preflightCal_Click(object sender, EventArgs e)
+        {
+            if (!MainV2.comPort.BaseStream.IsOpen && !MainV2.comPort.logreadmode)
+            {
+                CustomMessageBox.Show("Please connect first");
+                return;
+            }
+
+            if (MainV2.comPort.MAV.cs.armed)
+            {
+                CustomMessageBox.Show("Must not be amred for Preflight Calibration.");
+                return;
+            }
+
+            try
+            {
+                    ((Button)sender).Enabled = false;
+
+                    int param1 = 0;
+                    int param3 = 1;
+
+                    // request gyro
+
+                    if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduCopter2) param1 = 1; // gyro
+                    param3 = 1; // baro / airspeed
+
+                    MainV2.comPort.doCommand((MAVLink.MAV_CMD)Enum.Parse(typeof(MAVLink.MAV_CMD), "PREFLIGHT_CALIBRATION"), param1, 0, param3, 0, 0, 0, 0);
+            }
+            catch { CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR); }
+
+            ((Button)sender).Enabled = true;
+        }
+
+        private void ComboBox_selectWP_mouseDown(object sender, MouseEventArgs e)
+        {
+            ComboBox_selectWP_UserAction.Items.Clear();
+
+            ComboBox_selectWP_UserAction.Items.Add("Goto WP");
+            if (MainV2.comPort.MAV.param["CMD_TOTAL"] != null)
+            {
+                int wps = int.Parse(MainV2.comPort.MAV.param["CMD_TOTAL"].ToString());
+                for (int z = 1; z < wps; z++)
+                {
+                    ComboBox_selectWP_UserAction.Items.Add(z.ToString());
+                }
+            }
+
+            if (MainV2.comPort.MAV.param["WP_TOTAL"] != null)
+            {
+                int wps = int.Parse(MainV2.comPort.MAV.param["WP_TOTAL"].ToString());
+                for (int z = 1; z < wps; z++)
+                {
+                    ComboBox_selectWP_UserAction.Items.Add(z.ToString());
+                }
+            }
+
+            if (MainV2.comPort.MAV.param["MIS_TOTAL"] != null)
+            {
+                int wps = int.Parse(MainV2.comPort.MAV.param["MIS_TOTAL"].ToString());
+                for (int z = 1; z < wps; z++)
+                {
+                    ComboBox_selectWP_UserAction.Items.Add(z.ToString());
+                }
+            }
+
+        }
+
+        private void ComboBox_selectWP_UserAction_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!MainV2.comPort.BaseStream.IsOpen && !MainV2.comPort.logreadmode)
+            {
+                CustomMessageBox.Show("Please connect first");
+                return;
+            }
+
+            if (ComboBox_selectWP_UserAction.SelectedIndex == 0) return;
+
+            if (CustomMessageBox.Show("Go to waypoint: " + ComboBox_selectWP_UserAction.SelectedIndex, "WayPoint",
+                    MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                if (!MainV2.comPort.BaseStream.IsOpen && !MainV2.comPort.logreadmode)
+                {
+                    CustomMessageBox.Show("Please connect first.");
+                    ComboBox_selectWP_UserAction.SelectedIndex = 0;
+                    return;
+                }
+                //textBox_userActions.AppendText(DateTime.Now.ToString("HH:mm:ss") + " - Goto WayPoint " +
+                                               //ComboBox_selectWP_UserAction.SelectedIndex + System.Environment.NewLine);
+
+                try
+                {
+                    //((Button) sender).Enabled = false;
+                    MainV2.comPort.setWPCurrent((ushort)ComboBox_selectWP_UserAction.SelectedIndex); // set nav to  Waypoint
+                }
+                catch
+                {
+                    CustomMessageBox.Show("The command failed to execute", "Error");
+                }
+                //((Button) sender).Enabled = true;
+            }
+
+            ComboBox_selectWP_UserAction.SelectedIndex = 0;
+        }
+
+        private void CMB_setwp_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BUT_mouseEnter(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            btn.BackColor = Color.DarkBlue;
+        }
+
+        private void BUT_mouseLeave(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            btn.BackColor = Color.Black;
+        }
+
+        private void BUT_land_Click(object sender, EventArgs e)
+        {
+            if (!MainV2.comPort.BaseStream.IsOpen && !MainV2.comPort.logreadmode)
+            {
+                CustomMessageBox.Show("Please connect first");
+                return;
+            }
+
+            MainV2.comPort.setMode("Land");
+        }
+                
+        private void repeatRelay0Button_Click(object sender, EventArgs e)
+        {
+            //check if connected first
+            if (!MainV2.comPort.BaseStream.IsOpen && !MainV2.comPort.logreadmode)
+            {
+                CustomMessageBox.Show("Please connect first.");
+                return;
+            }
+
+                        try
+            {
+                MainV2.comPort.doCommand(MAVLink.MAV_CMD.DO_REPEAT_RELAY, 0, 1, 0.5F, 0, 0, 0, 0);
+            }
+            catch { CustomMessageBox.Show("Failed to DO_REPEAT_RELAY"); }
+        }
+
+        private void repeatRelay1Button_Click(object sender, EventArgs e)
+        {
+            //check if connected first
+            if (!MainV2.comPort.BaseStream.IsOpen && !MainV2.comPort.logreadmode)
+            {
+                CustomMessageBox.Show("Please connect first.");
+                return;
+            }
+
+            try
+            {
+                MainV2.comPort.doCommand(MAVLink.MAV_CMD.DO_REPEAT_RELAY, 1, 1, 0.5F, 0, 0, 0, 0);
+            }
+            catch { CustomMessageBox.Show("Failed to DO_REPEAT_RELAY"); }
+        }
+
+        private void servoOptions8_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabServo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BUT_Low_Click(object sender, EventArgs e)
+        {
+            if (!MainV2.comPort.BaseStream.IsOpen && !MainV2.comPort.logreadmode)
+            {
+                CustomMessageBox.Show("Please connect first.");
+               // CustomMessageBox.Show(TXT_rcchannel.Text.ToString());
+                return;
+            }
+            /*try
+            {
+                int.Parse(comboBox1.SelectedItem.ToString());
+                return;
+            }
+            catch (Exception ex) { CustomMessageBox.Show("Please select servo."); }*/
+
+            try
+            {
+                //CustomMessageBox.Show(TXT_rcchannel.Text.ToString());
+                if (MainV2.comPort.doCommand(MAVLink.MAV_CMD.DO_SET_SERVO, int.Parse(TXT_rcchannel.Text.ToString()), int.Parse(TXT_pwm_low.Text), 0, 0, 0, 0, 0))
+                {
+                    TXT_rcchannel.BackColor = Color.Red;
+                }
+                else
+                {
+                    CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
+                }
+            }
+            catch (Exception ex) { CustomMessageBox.Show(Strings.CommandFailed + ex.ToString(), Strings.ERROR); }
+        }
+
+
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BUT_High_Click(object sender, EventArgs e)
+        {
+            if (!MainV2.comPort.BaseStream.IsOpen && !MainV2.comPort.logreadmode)
+            {
+                CustomMessageBox.Show("Please connect first");
+                return;
+            }
+
+            try
+            {
+                if (MainV2.comPort.doCommand(MAVLink.MAV_CMD.DO_SET_SERVO, int.Parse(TXT_rcchannel.Text.ToString()), int.Parse(TXT_pwm_high.Text), 0, 0, 0, 0, 0))
+                {
+                    TXT_rcchannel.BackColor = Color.Green;
+                }
+                else
+                {
+                    CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
+                }
+            }
+            catch (Exception ex) { CustomMessageBox.Show(Strings.CommandFailed + ex.ToString(), Strings.ERROR); }
+        }
     }
 }

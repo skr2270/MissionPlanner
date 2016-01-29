@@ -86,7 +86,7 @@ namespace MissionPlanner
             public new Image bg = global::MissionPlanner.Properties.Resources.bgdark;
         }
 
-        Controls.MainSwitcher MyView;
+        public static Controls.MainSwitcher MyView;
 
         static bool _advanced = false;
         /// <summary>
@@ -275,11 +275,13 @@ namespace MissionPlanner
             {
                 MenuTerminal.Visible = false;
                 MenuSimulation.Visible = false;
+                MenuHelp.Visible = false;
             }
             else
             {
                 MenuTerminal.Visible = true;
                 MenuSimulation.Visible = true;
+                MenuHelp.Visible = true;
             }
         }
 
@@ -1026,7 +1028,8 @@ namespace MissionPlanner
                         _connectionControl.TOOL_APMFirmware.SelectedIndex = _connectionControl.TOOL_APMFirmware.Items.IndexOf(Firmwares.ArduPlane);
                     }
 
-                    // check for newer firmware
+                    // check for newer firmware - UAVSMOD
+                    /*
                     var softwares = Firmware.LoadSoftwares();
 
                     if (softwares.Count > 0)
@@ -1058,7 +1061,7 @@ namespace MissionPlanner
                         }
                         catch (Exception ex) { log.Error(ex); }
                     }
-
+                    */
                     FlightData.CheckBatteryShow();
 
                     MissionPlanner.Utilities.Tracking.AddEvent("Connect", "Connect", comPort.MAV.cs.firmware.ToString(), comPort.MAV.param.Count.ToString());
@@ -1079,7 +1082,6 @@ namespace MissionPlanner
                         if (MyView.current.Name == "SWConfig")
                             MyView.ShowScreen("SWConfig");
                     }
-
 
                     // load wps on connect option.
                     if (config["loadwpsonconnect"] != null && bool.Parse(config["loadwpsonconnect"].ToString()) == true)
@@ -1766,7 +1768,7 @@ namespace MissionPlanner
                         float.TryParse(MainV2.getConfig("speechaltheight"), out warnalt);
                         try
                         {
-                            int todo; // need a reset method
+                            //int todo; // need a reset method
                             altwarningmax = (int)Math.Max(MainV2.comPort.MAV.cs.alt, altwarningmax);
 
                             if (MainV2.getConfig("speechaltenabled") == "True" && MainV2.comPort.MAV.cs.alt != 0.00 && (MainV2.comPort.MAV.cs.alt <= warnalt) && MainV2.comPort.MAV.cs.armed)
@@ -2544,8 +2546,9 @@ namespace MissionPlanner
         {
             try
             {
-                System.Diagnostics.Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=mich146%40hotmail%2ecom&lc=AU&item_name=Michael%20Oborne&no_note=0&currency_code=AUD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHostedGuest");
+                System.Diagnostics.Process.Start( "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=mich146%40hotmail%2ecom&lc=AU&item_name=Michael%20Oborne&no_note=0&currency_code=AUD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHostedGuest");
             }
+
             catch { CustomMessageBox.Show("Link open failed. check your default webpage association"); }
         }
 
@@ -2747,6 +2750,11 @@ namespace MissionPlanner
         private void readonlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MainV2.comPort.ReadOnly = readonlyToolStripMenuItem.Checked;
+        }
+
+        private void MainV2_Load(object sender, EventArgs e)
+        {
+
         }
 
 

@@ -558,6 +558,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Strings.zh-Hans.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.zh-Hans.resx</DependentUpon>
+    </Compile>
     <Compile Include="Swarm\FollowPathControl.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -952,6 +957,7 @@
     <EmbeddedResource Include="Strings.zh-Hans.resx">
       <SubType>Designer</SubType>
       <LastGenOutput>Strings.zh-Hans.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Utilities\UpdateT.resx" />
     <EmbeddedResource Include="Utilities\UpdateT.zh-Hans.resx" />
@@ -6325,6 +6331,9 @@
     <None Include="Resources\PlusFramesGreen_04.png" />
     <None Include="Resources\PlusFramesGreen_06.png" />
     <None Include="Resources\pixhawk.jpg" />
+    <None Include="Resources\pause-button.png" />
+    <None Include="Resources\reset_button.png" />
+    <None Include="Resources\play-button.png" />
     <Content Include="Resources\rover.png" />
     <Content Include="Resources\splash.jpg" />
     <Content Include="Scripts\datetime.py">

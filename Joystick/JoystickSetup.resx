@@ -616,7 +616,7 @@
     <value>23</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
-    <value>Joystick</value>
+    <value>PPC</value>
   </data>
   <data name="&gt;&gt;label5.Name" xml:space="preserve">
     <value>label5</value>
@@ -1817,7 +1817,7 @@
     <value>495, 246</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Joystick</value>
+    <value>Pilot Payload Controller</value>
   </data>
   <data name="&gt;&gt;timer1.Name" xml:space="preserve">
     <value>timer1</value>

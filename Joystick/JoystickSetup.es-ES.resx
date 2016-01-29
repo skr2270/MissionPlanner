@@ -130,7 +130,7 @@
     <value>CH 6</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Joystick</value>
+    <value>Pilot Payload Controller</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Cabeceo</value>
@@ -163,7 +163,7 @@
     <value>0</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
-    <value>Joystick</value>
+    <value>Pilot Payload Controller</value>
   </data>
   <data name="expo_ch5.Text" xml:space="preserve">
     <value>0</value>

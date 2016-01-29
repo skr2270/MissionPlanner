@@ -21,8 +21,11 @@ namespace MissionPlanner.Controls
             InitializeComponent();
 
             thisservo = servo;
+            
+            
 
             TXT_rcchannel.Text = thisservo.ToString();
+            //CustomMessageBox.Show(this.ToString());
 
             loadSettings();
 
@@ -68,6 +71,13 @@ namespace MissionPlanner.Controls
 
         private void BUT_Low_Click(object sender, EventArgs e)
         {
+            if (!MainV2.comPort.BaseStream.IsOpen && !MainV2.comPort.logreadmode)
+            {
+                CustomMessageBox.Show("Please connect first.");
+                CustomMessageBox.Show(thisservo.ToString());
+                return;
+            }
+
             try
             {
                 if (MainV2.comPort.doCommand(MAVLink.MAV_CMD.DO_SET_SERVO, thisservo, int.Parse(TXT_pwm_low.Text), 0, 0, 0, 0, 0))
@@ -84,6 +94,12 @@ namespace MissionPlanner.Controls
 
         private void BUT_High_Click(object sender, EventArgs e)
         {
+            if (!MainV2.comPort.BaseStream.IsOpen && !MainV2.comPort.logreadmode)
+            {
+                CustomMessageBox.Show("Please connect first");
+                return;
+            }
+
             try
             {
                 if (MainV2.comPort.doCommand(MAVLink.MAV_CMD.DO_SET_SERVO, thisservo, int.Parse(TXT_pwm_high.Text), 0, 0, 0, 0, 0))
@@ -100,6 +116,12 @@ namespace MissionPlanner.Controls
 
         private void BUT_Repeat_Click(object sender, EventArgs e)
         {
+            if (!MainV2.comPort.BaseStream.IsOpen && !MainV2.comPort.logreadmode)
+            {
+                CustomMessageBox.Show("Please connect first");
+                return;
+            }
+
             try
             {
                 if (MainV2.comPort.doCommand(MAVLink.MAV_CMD.DO_SET_SERVO, thisservo, int.Parse(TXT_pwm_low.Text), 0, 0, 0, 0, 0))
@@ -157,6 +179,11 @@ namespace MissionPlanner.Controls
             {
                 MainV2.config["Servo" + thisservo + "_desc"] = desc;
             }
+        }
+
+        private void TXT_rcchannel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

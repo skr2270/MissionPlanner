@@ -22,6 +22,8 @@ namespace MissionPlanner
 {
     public class MAVLinkInterface: MAVLink, IDisposable
     {
+        public string ECUport { get { return MainV2.config["ECU_ComPort"].ToString(); } set { } }    //UAVS
+
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public ICommsSerial BaseStream { get; set; }
 
@@ -1062,7 +1064,7 @@ Please check the following
 
         public static void modifyParamForDisplay(bool fromapm, string paramname, ref float value)
         {
-            int planforremoval;
+            //int planforremoval;
 
             if (paramname.ToUpper().EndsWith("_IMAX") || paramname.ToUpper().EndsWith("ALT_HOLD_RTL") || paramname.ToUpper().EndsWith("APPROACH_ALT") || paramname.ToUpper().EndsWith("TRIM_ARSPD_CM") || paramname.ToUpper().EndsWith("MIN_GNDSPD_CM")
                 || paramname.ToUpper().EndsWith("XTRK_ANGLE_CD") || paramname.ToUpper().EndsWith("LIM_PITCH_MAX") || paramname.ToUpper().EndsWith("LIM_PITCH_MIN")
