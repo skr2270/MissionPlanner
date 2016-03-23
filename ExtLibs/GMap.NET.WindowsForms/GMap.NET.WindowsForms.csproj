@@ -51,6 +51,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.GLControl, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\OpenTK.GLControl.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -60,7 +68,11 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="GMap.NET.WindowsForms\ColorMatrixs.cs" />
+    <Compile Include="GMap.NET.WindowsForms\GLGraphics.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="GMap.NET.WindowsForms\GMapPolygon.cs" />
+    <Compile Include="GMap.NET.WindowsForms\IGraphics.cs" />
     <Compile Include="GMap.NET.WindowsForms\Markers\GMarkerGoogle.cs" />
     <Compile Include="GMap.NET.WindowsForms\ToolTips\GMapBaloonToolTip.cs" />
     <Compile Include="GMap.NET.WindowsForms\ToolTips\GMapRoundedToolTip.cs" />

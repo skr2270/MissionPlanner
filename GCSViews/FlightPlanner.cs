@@ -5420,6 +5420,10 @@ namespace MissionPlanner.GCSViews
 
         private void MainMap_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.CompositingMode = CompositingMode.SourceCopy;
+            e.Graphics.InterpolationMode = InterpolationMode.Low;
+            e.Graphics.SmoothingMode = SmoothingMode.None;
+
             // draw utm grid
             if (grid)
             {
