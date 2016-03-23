@@ -73,6 +73,22 @@ namespace MissionPlanner.Controls
             }
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            try
+            {
+                string versionString = GL.GetString(StringName.Version);
+                string majorString = versionString.Split(' ')[0];
+                var v = new Version(majorString);
+                npotSupported = v.Major >= 2;
+            }
+            catch
+            {
+            }
+        }
+
         protected override void OnHandleCreated(EventArgs e)
         {
             try
@@ -273,7 +289,16 @@ namespace MissionPlanner.Controls
                     return;
                 //bitmap = new Bitmap(512,512);
 
-                bitmap = ResizeImage(img, bitmap.Width, bitmap.Height);
+                // If the image is already a bitmap and we support NPOT textures then simply use it.
+                if (npotSupported && img is Bitmap)
+                {
+                    bitmap = (Bitmap)img;
+                }
+                else
+                {
+                    // Otherwise we have to resize img to be POT.
+                    bitmap = ResizeImage(img, bitmap.Width, bitmap.Height);
+                }
 
                 GL.DeleteTexture(texture);
 
@@ -969,5 +994,7 @@ namespace MissionPlanner.Controls
         {
             throw new NotImplementedException();
         }
+
+        public bool npotSupported { get; set; }
     }
 }

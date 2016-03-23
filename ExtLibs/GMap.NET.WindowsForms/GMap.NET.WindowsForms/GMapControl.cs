@@ -1403,9 +1403,12 @@ namespace GMap.NET.WindowsForms
 
       public Color EmptyMapBackground = Color.WhiteSmoke;
 
+      public Bitmap objBitmap = new Bitmap(1024, 1024, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
 #if !DESIGN
           protected override void OnPaint(PaintEventArgs e)
         {
+            DateTime starttime = DateTime.Now;
             if (opengl)
             {
                 // make this gl window and thread current
@@ -1424,11 +1427,46 @@ namespace GMap.NET.WindowsForms
                 Context.MakeCurrent(null);
             }
 
+
+            if (!opengl)
+            {
+                e.Graphics.DrawImageUnscaled(objBitmap, 0, 0);
+            }
+
             base.OnPaint(e);
+
+            count++;
+
+            huddrawtime += (int)(DateTime.Now - starttime).TotalMilliseconds;
+
+            if (DateTime.Now.Second != countdate.Second)
+            {
+                countdate = DateTime.Now;
+                Console.WriteLine("GMAP " + count + " hz drawtime " + (huddrawtime / count) + " gl " + opengl);
+                if ((huddrawtime / count) > 1000)
+                    opengl = false;
+
+                count = 0;
+                huddrawtime = 0;
+            }
       }
 
       protected void OnPaint(IGraphics g)
       {
+          if (graphicsObjectGDIP == null || !opengl && (objBitmap.Width != this.Width || objBitmap.Height != this.Height))
+          {
+              objBitmap = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+              objBitmap.MakeTransparent();
+              graphicsObjectGDIP = Graphics.FromImage(objBitmap);
+
+              graphicsObjectGDIP.SmoothingMode = SmoothingMode.AntiAlias;
+              graphicsObjectGDIP.InterpolationMode = InterpolationMode.NearestNeighbor;
+              graphicsObjectGDIP.CompositingMode = CompositingMode.SourceOver;
+              graphicsObjectGDIP.CompositingQuality = CompositingQuality.HighSpeed;
+              graphicsObjectGDIP.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+              graphicsObjectGDIP.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+          }
+
          if(ForceDoubleBuffer)
          {
             #region -- manual buffer --
@@ -1547,8 +1585,6 @@ namespace GMap.NET.WindowsForms
                }
             }
          }
-
-        
       }
 #endif
 
@@ -3151,6 +3187,9 @@ namespace GMap.NET.WindowsForms
       #region Serialization
 
       static readonly BinaryFormatter BinaryFormatter = new BinaryFormatter();
+      private int count;
+      private int huddrawtime;
+      private DateTime countdate;
 
       /// <summary>
       /// Serializes the overlays.
