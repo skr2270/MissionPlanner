@@ -170,7 +170,7 @@ namespace MissionPlanner.GCSViews
             }
 
             DataGridViewTextBoxCell cell;
-            if (alt == -2 && Commands.Columns[Alt.Index].HeaderText.Equals(cmdParamNames["WAYPOINT"][6] /*"Alt"*/))
+            if (alt == -2 && Commands.Columns[Alt.Index].HeaderText.Equals(cmdParamNames["WAYPOINT"][Alt.Index - 1]))
             {
                 if (CHK_verifyheight.Checked && (altmode)CMB_altmode.SelectedValue != altmode.Terrain) //Drag with verifyheight // use srtm data
                 {
@@ -197,20 +197,20 @@ namespace MissionPlanner.GCSViews
                     }
                 }
             }
-            if (Commands.Columns[Lat.Index].HeaderText.Equals(cmdParamNames["WAYPOINT"][4] /*"Lat"*/))
+            if (Commands.Columns[Lat.Index].HeaderText.Equals(cmdParamNames["WAYPOINT"][Lat.Index - 1]))
             {
                 cell = Commands.Rows[selectedrow].Cells[Lat.Index] as DataGridViewTextBoxCell;
                 cell.Value = lat.ToString("0.0000000");
                 cell.DataGridView.EndEdit();
             }
-            if (Commands.Columns[Lon.Index].HeaderText.Equals(cmdParamNames["WAYPOINT"][5] /*"Long"*/))
+            if (Commands.Columns[Lon.Index].HeaderText.Equals(cmdParamNames["WAYPOINT"][Lon.Index - 1]))
             {
                 cell = Commands.Rows[selectedrow].Cells[Lon.Index] as DataGridViewTextBoxCell;
                 cell.Value = lng.ToString("0.0000000");
                 cell.DataGridView.EndEdit();
             }
             if (alt != -1 && alt != -2 &&
-                Commands.Columns[Alt.Index].HeaderText.Equals(cmdParamNames["WAYPOINT"][6] /*"Alt"*/))
+                Commands.Columns[Alt.Index].HeaderText.Equals(cmdParamNames["WAYPOINT"][Alt.Index-1]))
             {
                 cell = Commands.Rows[selectedrow].Cells[Alt.Index] as DataGridViewTextBoxCell;
 
@@ -290,6 +290,16 @@ namespace MissionPlanner.GCSViews
                     CustomMessageBox.Show("Invalid Home or wp Alt");
                     cell.Style.BackColor = Color.Red;
                 }
+            }
+
+            if (lat != 0 && lng != 0)
+            {
+                var temp = new PointLatLngAlt(lat, lng);
+                int zone = temp.GetUTMZone();
+                   var temp2 = temp.ToUTM();
+                Commands[coordZone.Index, selectedrow].Value = zone;
+                Commands[coordEasting.Index, selectedrow].Value = temp2[0].ToString("0.000");
+                Commands[coordNorthing.Index, selectedrow].Value = temp2[1].ToString("0.000");
             }
 
             // Add more for other params
@@ -1978,7 +1988,7 @@ namespace MissionPlanner.GCSViews
                 temp.p3 = (float) (double.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString()));
                 temp.p4 = (float) (double.Parse(Commands.Rows[a].Cells[Param4.Index].Value.ToString()));
 
-                temp.Tag = Commands.Rows[a].Cells[Tag.Index].Value;
+                temp.Tag = Commands.Rows[a].Cells[TagData.Index].Value;
 
                 return temp;
             }
@@ -3776,6 +3786,15 @@ namespace MissionPlanner.GCSViews
 
         private void Commands_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            // we have modified a utm coords
+            if (e.ColumnIndex == coordZone.Index || e.ColumnIndex == coordNorthing.Index || e.ColumnIndex == coordEasting.Index)
+            {
+                var lla = new utmpos(double.Parse(Commands[coordEasting.Index, e.RowIndex].Value.ToString()), double.Parse(Commands[coordNorthing.Index, e.RowIndex].Value.ToString()), int.Parse(Commands[coordZone.Index, e.RowIndex].Value.ToString()));
+
+                Commands[Lat.Index, e.RowIndex].Value = lla.ToLLA().Lat;
+                Commands[Lon.Index, e.RowIndex].Value = lla.ToLLA().Lng;
+            }
+
             Commands_RowEnter(null,
                 new DataGridViewCellEventArgs(Commands.CurrentCell.ColumnIndex, Commands.CurrentCell.RowIndex));
 
@@ -5326,8 +5345,8 @@ namespace MissionPlanner.GCSViews
             double y, double z, object tag = null)
         {
             Commands.Rows[rowIndex].Cells[Command.Index].Value = cmd.ToString();
-            Commands.Rows[rowIndex].Cells[Tag.Index].Tag = tag;
-            Commands.Rows[rowIndex].Cells[Tag.Index].Value = tag;
+            Commands.Rows[rowIndex].Cells[TagData.Index].Tag = tag;
+            Commands.Rows[rowIndex].Cells[TagData.Index].Value = tag;
 
             ChangeColumnHeader(cmd.ToString());
 
