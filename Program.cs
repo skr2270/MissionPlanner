@@ -16,6 +16,7 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using MissionPlanner.Comms;
 using MissionPlanner.Controls;
+using System.Reflection;
 
 namespace MissionPlanner
 {
@@ -51,6 +52,8 @@ namespace MissionPlanner
             Console.WriteLine(
                 "If your error is about Microsoft.DirectX.DirectInput, please install the latest directx redist from here http://www.microsoft.com/en-us/download/details.aspx?id=35 \n\n");
             Console.WriteLine("Debug under mono    MONO_LOG_LEVEL=debug mono MissionPlanner.exe");
+
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
             Thread = Thread.CurrentThread;
 
@@ -234,6 +237,24 @@ namespace MissionPlanner
             catch
             {
             }
+        }
+
+        private static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            if (args.RequestingAssembly == null)
+                return null;
+            string folderPath = Path.GetDirectoryName(args.RequestingAssembly.Location);
+            string[] search = Directory.GetFiles(folderPath, new AssemblyName(args.Name).Name + ".dll",
+                SearchOption.AllDirectories);
+
+            foreach (var file in search)
+            {
+                Assembly assembly = Assembly.LoadFrom(file);
+                if (assembly.FullName == args.Name)
+                    return assembly;
+            }
+
+            return null;
         }
 
         private static inputboxreturn CommsBaseOnInputBoxShow(string title, string prompttext, ref string text)

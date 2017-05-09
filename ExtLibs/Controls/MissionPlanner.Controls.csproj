@@ -256,7 +256,6 @@
     <Compile Include="ProgressStep.Designer.cs">
       <DependentUpon>ProgressStep.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -378,7 +377,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="mykey.snk" />
     <None Include="packages.config" />
     <None Include="Resources\iconWarning32.png" />

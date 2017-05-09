@@ -128,7 +128,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MavlinkUtil.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="message_definitions\ardupilotmega.xml" />
@@ -165,9 +164,7 @@
     <Content Include="pymavlink\__init__.py" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="mykey.snk" />
-    <None Include="packages.config" />
     <None Include="pymavlink\generator\lib\minixsv\datatypes.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -187,6 +184,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="regenerate.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
