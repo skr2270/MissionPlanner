@@ -373,6 +373,8 @@ namespace MissionPlanner.GCSViews
             }
             //tabStatus.Controls.Clear();
 
+            tabStatus.Parent.Visible = false;
+
             int x = 10;
             int y = 10;
 
@@ -441,6 +443,8 @@ namespace MissionPlanner.GCSViews
             tabStatus.Width = x;
 
             ThemeManager.ApplyThemeTo(tabStatus);
+
+            tabStatus.Parent.Visible = true;
         }
 
         public void Activate()

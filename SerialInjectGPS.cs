@@ -1004,7 +1004,8 @@ namespace MissionPlanner
 
         private void dg_basepos_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
-            baseposList.RemoveAt(e.RowIndex);
+            if(baseposList.Count > 0)
+                baseposList.RemoveAt(e.RowIndex);
 
             saveBasePosList();
         }
