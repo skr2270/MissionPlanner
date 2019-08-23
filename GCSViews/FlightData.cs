@@ -17,6 +17,7 @@ using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using log4net;
 using MissionPlanner.ArduPilot;
+using MissionPlanner.Comms;
 using MissionPlanner.Controls;
 using MissionPlanner.Joystick;
 using MissionPlanner.Log;
@@ -26,6 +27,10 @@ using WebCamService;
 using ZedGraph;
 using LogAnalyzer = MissionPlanner.Utilities.LogAnalyzer;
 using MissionPlanner.Maps;
+using px4uploader;
+using uploader;
+using Firmware = MissionPlanner.Utilities.Firmware;
+using Uploader = px4uploader.Uploader;
 
 // written by michael oborne
 
@@ -4717,6 +4722,80 @@ namespace MissionPlanner.GCSViews
         private void GStreamerStopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             GStreamer.StopAll();
+        }
+
+        private void But_firmware_Click(object sender, EventArgs e)
+        {
+            var fw = new Firmware();
+
+            fw.UploadFlash("com1", "arduplane.apj", BoardDetect.boards.chbootloader);
+
+            CustomMessageBox.Show("please connect now");
+
+        }
+
+        private void But_erase_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                MainV2.comPort.Close();
+            } catch { }
+
+            px4uploader.Uploader up;
+
+            // CustomMessageBox.Show("Please unplug press ok, and plug board in", "px4");
+            var fw = new Firmware();
+            fw.AttemptRebootToBootloader();
+
+            DateTime DEADLINE = DateTime.Now.AddSeconds(30);
+            while (DateTime.Now < DEADLINE)
+            {
+                string[] allports = SerialPort.GetPortNames();
+
+                foreach (string port in allports)
+                {
+                    Console.WriteLine(DateTime.Now.Millisecond + " Trying Port " + port);
+
+                    try
+                    {
+                        try
+                        {
+                            up = new Uploader(port, 115200);
+                        }
+                        catch (Exception ex)
+                        {
+                            //System.Threading.Thread.Sleep(50);
+                            Console.WriteLine(ex.Message);
+                            continue;
+                        }
+
+                        try
+                        {
+                            up.identify();
+
+                            log.InfoFormat("Found board type {0} boardrev {1} bl rev {2} fwmax {3} on {4}", up.board_type,
+                                up.board_rev, up.bl_rev, up.fw_maxsize, port);
+
+                            up.__erase();
+
+                            up.close();
+
+                            MessageBox.Show("Erased");
+
+                            return;
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Not There..");
+                            //Console.WriteLine(ex.Message);
+                            up.close();
+                            continue;
+                        }
+                    }
+                    catch { }
+
+                }
+            }
         }
     }
 }

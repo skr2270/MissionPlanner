@@ -868,7 +868,7 @@ namespace MissionPlanner.Utilities
             return false;
         }
 
-        private void AttemptRebootToBootloader()
+        public void AttemptRebootToBootloader()
         {
             string[] allports = SerialPort.GetPortNames();
             
