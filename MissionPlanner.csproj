@@ -556,6 +556,9 @@
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigUAVCAN.resx">
       <DependentUpon>ConfigUAVCAN.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\FlightData.zh-CN.resx">
+      <DependentUpon>FlightData.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Joystick\JoystickAxis.resx" />
     <EmbeddedResource Include="Log\LogStrings.resx">
       <DependentUpon>LogStrings.cs</DependentUpon>

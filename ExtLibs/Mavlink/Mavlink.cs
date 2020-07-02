@@ -204,6 +204,7 @@ public partial class MAVLink
         new message_info(218, "GOPRO_SET_REQUEST", 17, 7, 7, typeof( mavlink_gopro_set_request_t )),
         new message_info(219, "GOPRO_SET_RESPONSE", 162, 2, 2, typeof( mavlink_gopro_set_response_t )),
         new message_info(226, "RPM", 207, 8, 8, typeof( mavlink_rpm_t )),
+        new message_info(227, "HYBRID_READ ", 62, 17, 17, typeof( mavlink_hybrid_read_t )),
         new message_info(230, "ESTIMATOR_STATUS", 163, 42, 42, typeof( mavlink_estimator_status_t )),
         new message_info(231, "WIND_COV", 105, 40, 40, typeof( mavlink_wind_cov_t )),
         new message_info(232, "GPS_INPUT", 151, 63, 63, typeof( mavlink_gps_input_t )),
@@ -462,6 +463,7 @@ public partial class MAVLink
         GOPRO_SET_REQUEST = 218,
         GOPRO_SET_RESPONSE = 219,
         RPM = 226,
+        HYBRID_READ = 227,
         ESTIMATOR_STATUS = 230,
         WIND_COV = 231,
         GPS_INPUT = 232,
@@ -6372,6 +6374,48 @@ public partial class MAVLink
         [Units("")]
         [Description("RPM Sensor2.")]
         public  float rpm2;
+    
+    };
+
+
+    [StructLayout(LayoutKind.Sequential,Pack=1,Size=17)]
+    ///<summary> Hybrid data. </summary>
+    public struct mavlink_hybrid_read_t
+    {
+        public mavlink_hybrid_read_t(uint run_time, uint next_time, ushort run_status, ushort rate, ushort voltage, ushort current, byte status) 
+        {
+            this.run_time = run_time;
+            this.next_time = next_time;
+            this.run_status = run_status;
+            this.rate = rate;
+            this.voltage = voltage;
+            this.current = current;
+            this.status = status;
+            
+        }
+        /// <summary>Run Time.   </summary>
+        [Units("")]
+        [Description("Run Time.")]
+        public  uint run_time;
+        /// <summary>Next Time.   </summary>
+        [Units("")]
+        [Description("Next Time.")]
+        public  uint next_time;
+        [Units("")]
+        [Description("Run Status.")]
+        public ushort run_status;
+        [Units("")]
+        [Description("Rate.")]
+        public ushort rate;
+        [Units("")]
+        [Description("Voltage.")]
+        public ushort voltage;
+        [Units("")]
+        [Description("Current.")]
+        public ushort current;
+        [Units("")]
+        [Description("Status.")]
+        public byte status;
     
     };
 

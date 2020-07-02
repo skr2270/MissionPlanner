@@ -26,15 +26,28 @@
             this.swapWithMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groundColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bindingSourceHud = new System.Windows.Forms.BindingSource(this.components);
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.aGaugeSpeed = new AGaugeApp.AGauge();
+            this.bindingSourceGaugesTab = new System.Windows.Forms.BindingSource(this.components);
+            this.statusTxt = new System.Windows.Forms.Label();
+            this.powerTxt = new System.Windows.Forms.Label();
+            this.voltageTxt = new System.Windows.Forms.Label();
+            this.runStatusTxt = new System.Windows.Forms.Label();
+            this.nextMainTimeTxt = new System.Windows.Forms.Label();
+            this.runTimeTxt = new System.Windows.Forms.Label();
+            this.statusLabel = new System.Windows.Forms.Label();
+            this.powerLabel = new System.Windows.Forms.Label();
+            this.voltageLabel = new System.Windows.Forms.Label();
+            this.runstatusLabel = new System.Windows.Forms.Label();
+            this.nexttimeLabel = new System.Windows.Forms.Label();
+            this.runtimeLabel = new System.Windows.Forms.Label();
             this.tabControlactions = new System.Windows.Forms.TabControl();
             this.contextMenuStripactionstab = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.customizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabQuick = new System.Windows.Forms.TabPage();
             this.tableLayoutPanelQuick = new System.Windows.Forms.TableLayoutPanel();
             this.quickView6 = new MissionPlanner.Controls.QuickView();
-            this.contextMenuStripQuickView = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.setViewCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bindingSourceQuickTab = new System.Windows.Forms.BindingSource(this.components);
             this.quickView5 = new MissionPlanner.Controls.QuickView();
             this.quickView4 = new MissionPlanner.Controls.QuickView();
             this.quickView3 = new MissionPlanner.Controls.QuickView();
@@ -71,7 +84,6 @@
             this.checkListControl1 = new MissionPlanner.Controls.PreFlight.CheckListControl();
             this.tabGauges = new System.Windows.Forms.TabPage();
             this.Gvspeed = new AGaugeApp.AGauge();
-            this.bindingSourceGaugesTab = new System.Windows.Forms.BindingSource(this.components);
             this.Gheading = new MissionPlanner.Controls.HSI();
             this.Galt = new AGaugeApp.AGauge();
             this.Gspeed = new AGaugeApp.AGauge();
@@ -174,6 +186,9 @@
             this.label1 = new MissionPlanner.Controls.MyLabel();
             this.CHK_autopan = new System.Windows.Forms.CheckBox();
             this.CB_tuning = new System.Windows.Forms.CheckBox();
+            this.contextMenuStripQuickView = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.setViewCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bindingSourceQuickTab = new System.Windows.Forms.BindingSource(this.components);
             this.ZedGraphTimer = new System.Windows.Forms.Timer(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openScriptDialog = new System.Windows.Forms.OpenFileDialog();
@@ -182,6 +197,7 @@
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
+            this.infoTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.MainH)).BeginInit();
             this.MainH.Panel1.SuspendLayout();
             this.MainH.Panel2.SuspendLayout();
@@ -192,17 +208,22 @@
             this.SubMainLeft.SuspendLayout();
             this.contextMenuStripHud.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceHud)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceGaugesTab)).BeginInit();
             this.tabControlactions.SuspendLayout();
             this.contextMenuStripactionstab.SuspendLayout();
             this.tabQuick.SuspendLayout();
-            this.tableLayoutPanelQuick.SuspendLayout();
-            this.contextMenuStripQuickView.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceQuickTab)).BeginInit();
             this.tabActions.SuspendLayout();
             this.tabActionsSimple.SuspendLayout();
             this.tabPagePreFlight.SuspendLayout();
             this.tabGauges.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceGaugesTab)).BeginInit();
             this.tabServo.SuspendLayout();
             this.flowLayoutPanelServos.SuspendLayout();
             this.tabTLogs.SuspendLayout();
@@ -230,6 +251,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.TRK_zoom)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Zoomlevel)).BeginInit();
+            this.contextMenuStripQuickView.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceQuickTab)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceStatusTab)).BeginInit();
             this.SuspendLayout();
             // 
@@ -260,7 +283,7 @@
             // 
             // SubMainLeft.Panel2
             // 
-            this.SubMainLeft.Panel2.Controls.Add(this.tabControlactions);
+            this.SubMainLeft.Panel2.Controls.Add(this.splitContainer2);
             // 
             // hud1
             // 
@@ -455,6 +478,253 @@
             // bindingSourceHud
             // 
             this.bindingSourceHud.DataSource = typeof(MissionPlanner.CurrentState);
+            // 
+            // splitContainer2
+            // 
+            resources.ApplyResources(this.splitContainer2, "splitContainer2");
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.splitContainer3);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.tabControlactions);
+            // 
+            // splitContainer3
+            // 
+            resources.ApplyResources(this.splitContainer3, "splitContainer3");
+            this.splitContainer3.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer3.Name = "splitContainer3";
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.aGaugeSpeed);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.statusTxt);
+            this.splitContainer3.Panel2.Controls.Add(this.powerTxt);
+            this.splitContainer3.Panel2.Controls.Add(this.voltageTxt);
+            this.splitContainer3.Panel2.Controls.Add(this.runStatusTxt);
+            this.splitContainer3.Panel2.Controls.Add(this.nextMainTimeTxt);
+            this.splitContainer3.Panel2.Controls.Add(this.runTimeTxt);
+            this.splitContainer3.Panel2.Controls.Add(this.statusLabel);
+            this.splitContainer3.Panel2.Controls.Add(this.powerLabel);
+            this.splitContainer3.Panel2.Controls.Add(this.voltageLabel);
+            this.splitContainer3.Panel2.Controls.Add(this.runstatusLabel);
+            this.splitContainer3.Panel2.Controls.Add(this.nexttimeLabel);
+            this.splitContainer3.Panel2.Controls.Add(this.runtimeLabel);
+            // 
+            // aGaugeSpeed
+            // 
+            this.aGaugeSpeed.BackColor = System.Drawing.Color.Transparent;
+            this.aGaugeSpeed.BackgroundImage = global::MissionPlanner.Properties.Resources.Gaugebg;
+            resources.ApplyResources(this.aGaugeSpeed, "aGaugeSpeed");
+            this.aGaugeSpeed.BaseArcColor = System.Drawing.Color.Transparent;
+            this.aGaugeSpeed.BaseArcRadius = 70;
+            this.aGaugeSpeed.BaseArcStart = 135;
+            this.aGaugeSpeed.BaseArcSweep = 270;
+            this.aGaugeSpeed.BaseArcWidth = 2;
+            this.aGaugeSpeed.Cap_Idx = ((byte)(2));
+            this.aGaugeSpeed.CapColor = System.Drawing.Color.Black;
+            this.aGaugeSpeed.CapColors = new System.Drawing.Color[] {
+        System.Drawing.Color.White,
+        System.Drawing.Color.White,
+        System.Drawing.Color.Black,
+        System.Drawing.Color.Black,
+        System.Drawing.Color.Black};
+            this.aGaugeSpeed.CapPosition = new System.Drawing.Point(10, 10);
+            this.aGaugeSpeed.CapsPosition = new System.Drawing.Point[] {
+        new System.Drawing.Point(58, 85),
+        new System.Drawing.Point(50, 110),
+        new System.Drawing.Point(10, 10),
+        new System.Drawing.Point(10, 10),
+        new System.Drawing.Point(10, 10)};
+            this.aGaugeSpeed.CapsText = new string[] {
+        " Rate",
+        "",
+        "",
+        "",
+        ""};
+            this.aGaugeSpeed.CapText = "";
+            this.aGaugeSpeed.Center = new System.Drawing.Point(75, 75);
+            this.aGaugeSpeed.DataBindings.Add(new System.Windows.Forms.Binding("Value0", this.bindingSourceGaugesTab, "airspeed", true));
+            this.aGaugeSpeed.DataBindings.Add(new System.Windows.Forms.Binding("Value1", this.bindingSourceGaugesTab, "groundspeed", true));
+            this.aGaugeSpeed.MaxValue = 15000F;
+            this.aGaugeSpeed.MinValue = 0F;
+            this.aGaugeSpeed.Name = "aGaugeSpeed";
+            this.aGaugeSpeed.Need_Idx = ((byte)(3));
+            this.aGaugeSpeed.NeedleColor1 = AGaugeApp.AGauge.NeedleColorEnum.Gray;
+            this.aGaugeSpeed.NeedleColor2 = System.Drawing.Color.Brown;
+            this.aGaugeSpeed.NeedleEnabled = false;
+            this.aGaugeSpeed.NeedleRadius = 70;
+            this.aGaugeSpeed.NeedlesColor1 = new AGaugeApp.AGauge.NeedleColorEnum[] {
+        AGaugeApp.AGauge.NeedleColorEnum.Gray,
+        AGaugeApp.AGauge.NeedleColorEnum.Red,
+        AGaugeApp.AGauge.NeedleColorEnum.Blue,
+        AGaugeApp.AGauge.NeedleColorEnum.Gray};
+            this.aGaugeSpeed.NeedlesColor2 = new System.Drawing.Color[] {
+        System.Drawing.Color.White,
+        System.Drawing.Color.White,
+        System.Drawing.Color.White,
+        System.Drawing.Color.Brown};
+            this.aGaugeSpeed.NeedlesEnabled = new bool[] {
+        false,
+        true,
+        false,
+        false};
+            this.aGaugeSpeed.NeedlesRadius = new int[] {
+        50,
+        50,
+        70,
+        70};
+            this.aGaugeSpeed.NeedlesType = new int[] {
+        0,
+        0,
+        0,
+        0};
+            this.aGaugeSpeed.NeedlesWidth = new int[] {
+        2,
+        1,
+        2,
+        2};
+            this.aGaugeSpeed.NeedleType = 0;
+            this.aGaugeSpeed.NeedleWidth = 2;
+            this.aGaugeSpeed.Range_Idx = ((byte)(2));
+            this.aGaugeSpeed.RangeColor = System.Drawing.Color.Orange;
+            this.aGaugeSpeed.RangeEnabled = false;
+            this.aGaugeSpeed.RangeEndValue = 50F;
+            this.aGaugeSpeed.RangeInnerRadius = 1;
+            this.aGaugeSpeed.RangeOuterRadius = 70;
+            this.aGaugeSpeed.RangesColor = new System.Drawing.Color[] {
+        System.Drawing.Color.LightGreen,
+        System.Drawing.Color.Red,
+        System.Drawing.Color.Orange,
+        System.Drawing.SystemColors.Control,
+        System.Drawing.SystemColors.Control};
+            this.aGaugeSpeed.RangesEnabled = new bool[] {
+        false,
+        false,
+        false,
+        false,
+        false};
+            this.aGaugeSpeed.RangesEndValue = new float[] {
+        35F,
+        60F,
+        50F,
+        0F,
+        0F};
+            this.aGaugeSpeed.RangesInnerRadius = new int[] {
+        1,
+        1,
+        1,
+        70,
+        70};
+            this.aGaugeSpeed.RangesOuterRadius = new int[] {
+        70,
+        70,
+        70,
+        80,
+        80};
+            this.aGaugeSpeed.RangesStartValue = new float[] {
+        0F,
+        50F,
+        35F,
+        0F,
+        0F};
+            this.aGaugeSpeed.RangeStartValue = 35F;
+            this.aGaugeSpeed.ScaleLinesInterColor = System.Drawing.Color.White;
+            this.aGaugeSpeed.ScaleLinesInterInnerRadius = 52;
+            this.aGaugeSpeed.ScaleLinesInterOuterRadius = 60;
+            this.aGaugeSpeed.ScaleLinesInterWidth = 1;
+            this.aGaugeSpeed.ScaleLinesMajorColor = System.Drawing.Color.White;
+            this.aGaugeSpeed.ScaleLinesMajorInnerRadius = 50;
+            this.aGaugeSpeed.ScaleLinesMajorOuterRadius = 60;
+            this.aGaugeSpeed.ScaleLinesMajorStepValue = 2500F;
+            this.aGaugeSpeed.ScaleLinesMajorWidth = 2;
+            this.aGaugeSpeed.ScaleLinesMinorColor = System.Drawing.Color.White;
+            this.aGaugeSpeed.ScaleLinesMinorInnerRadius = 55;
+            this.aGaugeSpeed.ScaleLinesMinorNumOf = 9;
+            this.aGaugeSpeed.ScaleLinesMinorOuterRadius = 60;
+            this.aGaugeSpeed.ScaleLinesMinorWidth = 1;
+            this.aGaugeSpeed.ScaleNumbersColor = System.Drawing.Color.White;
+            this.aGaugeSpeed.ScaleNumbersFormat = null;
+            this.aGaugeSpeed.ScaleNumbersRadius = 42;
+            this.aGaugeSpeed.ScaleNumbersRotation = 0;
+            this.aGaugeSpeed.ScaleNumbersStartScaleLine = 1;
+            this.aGaugeSpeed.ScaleNumbersStepScaleLines = 1;
+            this.aGaugeSpeed.Value = 0F;
+            this.aGaugeSpeed.Value0 = 0F;
+            this.aGaugeSpeed.Value1 = 0F;
+            this.aGaugeSpeed.Value2 = 0F;
+            this.aGaugeSpeed.Value3 = 0F;
+            // 
+            // bindingSourceGaugesTab
+            // 
+            this.bindingSourceGaugesTab.DataSource = typeof(MissionPlanner.CurrentState);
+            // 
+            // statusTxt
+            // 
+            resources.ApplyResources(this.statusTxt, "statusTxt");
+            this.statusTxt.Name = "statusTxt";
+            // 
+            // powerTxt
+            // 
+            resources.ApplyResources(this.powerTxt, "powerTxt");
+            this.powerTxt.Name = "powerTxt";
+            // 
+            // voltageTxt
+            // 
+            resources.ApplyResources(this.voltageTxt, "voltageTxt");
+            this.voltageTxt.Name = "voltageTxt";
+            // 
+            // runStatusTxt
+            // 
+            resources.ApplyResources(this.runStatusTxt, "runStatusTxt");
+            this.runStatusTxt.Name = "runStatusTxt";
+            // 
+            // nextMainTimeTxt
+            // 
+            resources.ApplyResources(this.nextMainTimeTxt, "nextMainTimeTxt");
+            this.nextMainTimeTxt.Name = "nextMainTimeTxt";
+            // 
+            // runTimeTxt
+            // 
+            resources.ApplyResources(this.runTimeTxt, "runTimeTxt");
+            this.runTimeTxt.Name = "runTimeTxt";
+            // 
+            // statusLabel
+            // 
+            resources.ApplyResources(this.statusLabel, "statusLabel");
+            this.statusLabel.Name = "statusLabel";
+            // 
+            // powerLabel
+            // 
+            resources.ApplyResources(this.powerLabel, "powerLabel");
+            this.powerLabel.Name = "powerLabel";
+            // 
+            // voltageLabel
+            // 
+            resources.ApplyResources(this.voltageLabel, "voltageLabel");
+            this.voltageLabel.Name = "voltageLabel";
+            // 
+            // runstatusLabel
+            // 
+            resources.ApplyResources(this.runstatusLabel, "runstatusLabel");
+            this.runstatusLabel.Name = "runstatusLabel";
+            // 
+            // nexttimeLabel
+            // 
+            resources.ApplyResources(this.nexttimeLabel, "nexttimeLabel");
+            this.nexttimeLabel.Name = "nexttimeLabel";
+            // 
+            // runtimeLabel
+            // 
+            resources.ApplyResources(this.runtimeLabel, "runtimeLabel");
+            this.runtimeLabel.Name = "runtimeLabel";
             // 
             // tabControlactions
             // 
@@ -1100,10 +1370,6 @@
             this.Gvspeed.Value1 = 0F;
             this.Gvspeed.Value2 = 0F;
             this.Gvspeed.Value3 = 0F;
-            // 
-            // bindingSourceGaugesTab
-            // 
-            this.bindingSourceGaugesTab.DataSource = typeof(MissionPlanner.CurrentState);
             // 
             // Gheading
             // 
@@ -2285,6 +2551,23 @@
             this.CB_tuning.UseVisualStyleBackColor = true;
             this.CB_tuning.CheckedChanged += new System.EventHandler(this.CB_tuning_CheckedChanged);
             // 
+            // contextMenuStripQuickView
+            // 
+            this.contextMenuStripQuickView.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setViewCountToolStripMenuItem});
+            this.contextMenuStripQuickView.Name = "contextMenuStripQuickView";
+            resources.ApplyResources(this.contextMenuStripQuickView, "contextMenuStripQuickView");
+            // 
+            // setViewCountToolStripMenuItem
+            // 
+            this.setViewCountToolStripMenuItem.Name = "setViewCountToolStripMenuItem";
+            resources.ApplyResources(this.setViewCountToolStripMenuItem, "setViewCountToolStripMenuItem");
+            this.setViewCountToolStripMenuItem.Click += new System.EventHandler(this.setViewCountToolStripMenuItem_Click);
+            // 
+            // bindingSourceQuickTab
+            // 
+            this.bindingSourceQuickTab.DataSource = typeof(MissionPlanner.CurrentState);
+            // 
             // ZedGraphTimer
             // 
             this.ZedGraphTimer.Tick += new System.EventHandler(this.timer1_Tick);
@@ -2329,6 +2612,12 @@
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
             // 
+            // infoTimer
+            // 
+            this.infoTimer.Enabled = true;
+            this.infoTimer.Interval = 200;
+            this.infoTimer.Tick += new System.EventHandler(this.InfoTimer_Tick);
+            // 
             // FlightData
             // 
             this.Controls.Add(this.MainH);
@@ -2348,17 +2637,23 @@
             this.SubMainLeft.ResumeLayout(false);
             this.contextMenuStripHud.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceHud)).EndInit();
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            this.splitContainer3.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceGaugesTab)).EndInit();
             this.tabControlactions.ResumeLayout(false);
             this.contextMenuStripactionstab.ResumeLayout(false);
             this.tabQuick.ResumeLayout(false);
-            this.tableLayoutPanelQuick.ResumeLayout(false);
-            this.contextMenuStripQuickView.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceQuickTab)).EndInit();
             this.tabActions.ResumeLayout(false);
             this.tabActionsSimple.ResumeLayout(false);
             this.tabPagePreFlight.ResumeLayout(false);
             this.tabGauges.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceGaugesTab)).EndInit();
             this.tabServo.ResumeLayout(false);
             this.flowLayoutPanelServos.ResumeLayout(false);
             this.tabTLogs.ResumeLayout(false);
@@ -2395,6 +2690,8 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Zoomlevel)).EndInit();
+            this.contextMenuStripQuickView.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSourceQuickTab)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceStatusTab)).EndInit();
             this.ResumeLayout(false);
 
@@ -2575,5 +2872,21 @@
         private Controls.MyButton BUT_PayloadFolder;
         private System.Windows.Forms.ToolStripMenuItem setHomeHereToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem groundColorToolStripMenuItem;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private AGaugeApp.AGauge aGaugeSpeed;
+        private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.Label runtimeLabel;
+        private System.Windows.Forms.Label nexttimeLabel;
+        private System.Windows.Forms.Label runstatusLabel;
+        private System.Windows.Forms.Label powerLabel;
+        private System.Windows.Forms.Label voltageLabel;
+        private System.Windows.Forms.Label statusLabel;
+        private System.Windows.Forms.Timer infoTimer;
+        private System.Windows.Forms.Label statusTxt;
+        private System.Windows.Forms.Label powerTxt;
+        private System.Windows.Forms.Label voltageTxt;
+        private System.Windows.Forms.Label runStatusTxt;
+        private System.Windows.Forms.Label nextMainTimeTxt;
+        private System.Windows.Forms.Label runTimeTxt;
     }
 }

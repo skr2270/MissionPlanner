@@ -4710,5 +4710,95 @@ namespace MissionPlanner.GCSViews
 
             Settings.config["groundColorToolStripMenuItem"] = groundColorToolStripMenuItem.Checked.ToString();
         }
+
+        private void InfoTimer_Tick(object sender, EventArgs e)
+        {
+
+            if (MainV2.comPort.BaseStream.IsOpen)
+            {
+                this.Invoke((MethodInvoker)delegate
+                {
+                    aGaugeSpeed.Value1 = (float)MainV2.comPort.MAV.cs.rate;
+                    uint min = (MainV2.comPort.MAV.cs.run_time & 0x0000FFFF) / 256;
+                    uint hour = ((MainV2.comPort.MAV.cs.run_time & 0xFFFF0000) >> 16);
+                    runTimeTxt.Text = hour.ToString("D4") + ":" + min.ToString("D2");
+                    uint nhour = MainV2.comPort.MAV.cs.next_time / 3600;
+                    nextMainTimeTxt.Text = nhour.ToString("D4");
+                    if (MainV2.comPort.MAV.cs.run_status == 0)
+                    {
+                        runStatusTxt.Text = "OK";
+                    }
+                    else
+                    {
+                        runStatusTxt.Text = "ERROR";
+                        string cul = System.Globalization.CultureInfo.InstalledUICulture.Name;
+                        if (cul.ToLower() == "zh-cn")
+                        {
+                            if ((MainV2.comPort.MAV.cs.run_status & 0x00000001) > 0)
+                            {
+                                runStatusTxt.Text += " 请保养";
+                            }
+                            if ((MainV2.comPort.MAV.cs.run_status & 0x00000002) > 0)
+                            {
+                                runStatusTxt.Text += " 锁机";
+                            }
+                            if ((MainV2.comPort.MAV.cs.run_status & 0x00000004) > 0)
+                            {
+                                runStatusTxt.Text += " 过载";
+                            }
+                            if ((MainV2.comPort.MAV.cs.run_status & 0x00000008) > 0)
+                            {
+                                runStatusTxt.Text += " 发电电压低";
+                            }
+                            if ((MainV2.comPort.MAV.cs.run_status & 0x00000010) > 0)
+                            {
+                                runStatusTxt.Text += " 电池电压低";
+                            }
+                        }
+                        else
+                        {
+                            if ((MainV2.comPort.MAV.cs.run_status & 0x00000001) > 0)
+                            {
+                                runStatusTxt.Text += " maintenance required";
+                            }
+                            if ((MainV2.comPort.MAV.cs.run_status & 0x00000002) > 0)
+                            {
+                                runStatusTxt.Text += " start disenabled";
+                            }
+                            if ((MainV2.comPort.MAV.cs.run_status & 0x00000004) > 0)
+                            {
+                                runStatusTxt.Text += " overload";
+                            }
+                            if ((MainV2.comPort.MAV.cs.run_status & 0x00000008) > 0)
+                            {
+                                runStatusTxt.Text += " low voltage output";
+                            }
+                            if ((MainV2.comPort.MAV.cs.run_status & 0x00000010) > 0)
+                            {
+                                runStatusTxt.Text += " battery low voltage";
+                            }
+                        }
+                    }
+                    voltageTxt.Text = ((float)MainV2.comPort.MAV.cs.voltage) / 100.0f + " V";
+                    powerTxt.Text = (((float)MainV2.comPort.MAV.cs.current_power) / 100.0f * ((float)MainV2.comPort.MAV.cs.voltage) / 100.0f).ToString("F2") + "W";
+                    switch (MainV2.comPort.MAV.cs.status)
+                    {
+                        case 0:
+                            statusTxt.Text = "IDLE";
+                            break;
+                        case 1:
+                            statusTxt.Text = "RUN";
+                            break;
+                        case 2:
+                            statusTxt.Text = "CHARGE";
+                            break;
+                        case 3:
+                            statusTxt.Text = "BALANCE";
+                            break;
+
+                    }
+                });
+            }
+        }
     }
 }

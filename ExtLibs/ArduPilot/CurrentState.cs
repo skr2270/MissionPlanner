@@ -1422,6 +1422,15 @@ namespace MissionPlanner
 
         public float rpm2 { get; set; }
 
+        //Hybrid data
+        public uint run_time { get; set; }
+        public uint next_time { get; set; }
+        public ushort run_status { get; set; }
+        public ushort rate { get; set; }
+        public ushort voltage { get; set; }
+        public ushort current_power { get; set; }
+        public byte status { get; set; }
+
         public uint capabilities { get; set; }
 
         public float speedup { get; set; }
@@ -2576,6 +2585,21 @@ namespace MissionPlanner
                         rpm2 = rpm.rpm2;
 
                         //MAVLink.packets[(byte)MAVLink.MSG_NAMES.NAV_CONTROLLER_OUTPUT);
+                    }
+
+                    mavLinkMessage = MAV.getPacket((uint)MAVLink.MAVLINK_MSG_ID.HYBRID_READ);
+
+                    if (mavLinkMessage != null)
+                    {
+                        var hybrid = mavLinkMessage.ToStructure<MAVLink.mavlink_hybrid_read_t>();
+
+                        run_time = hybrid.run_time;
+                        next_time = hybrid.next_time;
+                        run_status = hybrid.run_status;
+                        rate = hybrid.rate;
+                        voltage = hybrid.voltage;
+                        current_power = hybrid.current;
+                        status = hybrid.status;
                     }
 
                     mavLinkMessage = MAV.getPacket((uint) MAVLink.MAVLINK_MSG_ID.RC_CHANNELS_RAW);
