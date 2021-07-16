@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ArrayOfCheckListItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<ArrayOfCheckListItem xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <CheckListItem>
     <TrueColor>Green</TrueColor>
     <FalseColor>Red</FalseColor>
-    <Description>Veryify GPS</Description>
+    <Description>Verify GPS</Description>
     <Text>{value} &gt;= 3</Text>
     <TriggerValue>3</TriggerValue>
     <Name>gpsstatus</Name>
@@ -32,7 +32,7 @@
     <FalseColor>Red</FalseColor>
     <Description>Battery Level</Description>
     <Text>{value} V</Text>
-    <TriggerValue>22</TriggerValue>
+    <TriggerValue>11.5</TriggerValue>
     <Name>battery_voltage</Name>
     <ConditionType>GT</ConditionType>
   </CheckListItem>
@@ -57,7 +57,7 @@
   <CheckListItem>
     <TrueColor>White</TrueColor>
     <FalseColor>White</FalseColor>
-    <Description>Tail and wings secured?</Description>
+    <Description>Props and motors secured?</Description>
     <Text />
     <TriggerValue>0</TriggerValue>
     <Name>roll</Name>
@@ -66,7 +66,7 @@
   <CheckListItem>
     <TrueColor>White</TrueColor>
     <FalseColor>White</FalseColor>
-    <Description>All servos respond to input?</Description>
+    <Description>No loose parts or cables?</Description>
     <Text />
     <TriggerValue>0</TriggerValue>
     <Name>roll</Name>
@@ -75,34 +75,7 @@
   <CheckListItem>
     <TrueColor>White</TrueColor>
     <FalseColor>White</FalseColor>
-    <Description>All servos respond to pitch and roll?</Description>
-    <Text />
-    <TriggerValue>0</TriggerValue>
-    <Name>roll</Name>
-    <ConditionType>NONE</ConditionType>
-  </CheckListItem>
-  <CheckListItem>
-    <TrueColor>White</TrueColor>
-    <FalseColor>White</FalseColor>
-    <Description>Center of gravity at indicated point?</Description>
-    <Text />
-    <TriggerValue>0</TriggerValue>
-    <Name>roll</Name>
-    <ConditionType>NONE</ConditionType>
-  </CheckListItem>
-  <CheckListItem>
-    <TrueColor>White</TrueColor>
-    <FalseColor>White</FalseColor>
-    <Description>Servo linkages are secure?</Description>
-    <Text />
-    <TriggerValue>0</TriggerValue>
-    <Name>roll</Name>
-    <ConditionType>NONE</ConditionType>
-  </CheckListItem>
-  <CheckListItem>
-    <TrueColor>White</TrueColor>
-    <FalseColor>White</FalseColor>
-    <Description>Camera is on and ready to fly?</Description>
+    <Description>Weather check?</Description>
     <Text />
     <TriggerValue>0</TriggerValue>
     <Name>roll</Name>
