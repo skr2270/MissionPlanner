@@ -167,8 +167,7 @@ namespace MissionPlanner.Controls
             hud1.HoldInvalidation = true;
             // update bg to be trans
             hud1.bgimage = trans;
-            // use gdi
-            hud1.opengl = false;
+        
             // resize
             hud1.Width = bmpin.Width;
             hud1.Height = bmpin.Height;
@@ -731,7 +730,7 @@ namespace MissionPlanner.Controls
 
 
                 hud1.HoldInvalidation = true;
-                hud1.opengl = true;
+          
                 hud1.bgimage = image;
                 hud1.streamjpgenable = true;
                 if (fullresolution)

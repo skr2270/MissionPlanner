@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using OpenTK;
-using OpenTK.Graphics.OpenGL;
+using System.Windows.Forms;
+using MissionPlanner.Utilities;
 
 namespace MissionPlanner.Controls
 {
-    public class Sphere: OpenTK.GLControl
+    public class Sphere: Control
     {
         const double rad2deg = (180 / Math.PI);
         const double deg2rad = (1.0 / rad2deg);
@@ -121,13 +121,13 @@ namespace MissionPlanner.Controls
                 return;
             }
 
-            GL.Viewport(0, 0, this.Width, this.Height);
+            //GL.Viewport(0, 0, this.Width, this.Height);
 
             // radians += 5 * deg2rad;
 
             if (rotatewithdata)
                 yaw += 5 * deg2rad;
-
+            /*
             MakeCurrent();
 
             GL.MatrixMode(MatrixMode.Projection);
@@ -275,11 +275,11 @@ namespace MissionPlanner.Controls
 
             //DrawCircle(CenterPoint.X, CenterPoint.Y, CenterPoint.Z, newyaw, (float)(max), 60);
 
-            this.SwapBuffers();
+            this.SwapBuffers();*/
         }
 
         void DrawCircle(float cx, float cy, float cz, float yaw, float r, int num_segments)
-        {
+        {/*
             GL.Begin(PrimitiveType.LineLoop);
             for (int ii = 0; ii < num_segments; ii++)
             {
@@ -296,7 +296,7 @@ namespace MissionPlanner.Controls
                 GL.Vertex3(x + cx, y + cy, z + cz);//output vertex 
 
             }
-            GL.End();
+            GL.End();*/
         }
 
         void get_pos(double radius, double theta, double phi, ref Vector3 camera_pos)

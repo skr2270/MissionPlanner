@@ -45,7 +45,7 @@ namespace MissionPlanner.Controls
             this.sphere1.BackColor = System.Drawing.Color.Black;
             this.sphere1.Name = "sphere1";
             this.sphere1.rotatewithdata = true;
-            this.sphere1.VSync = false;
+          
             // 
             // CHK_rotate
             // 
@@ -62,7 +62,7 @@ namespace MissionPlanner.Controls
             this.sphere2.BackColor = System.Drawing.Color.Black;
             this.sphere2.Name = "sphere2";
             this.sphere2.rotatewithdata = true;
-            this.sphere2.VSync = false;
+       
             // 
             // label1
             // 
@@ -84,7 +84,7 @@ namespace MissionPlanner.Controls
             this.sphere3.BackColor = System.Drawing.Color.Black;
             this.sphere3.Name = "sphere3";
             this.sphere3.rotatewithdata = true;
-            this.sphere3.VSync = false;
+         
             // 
             // ProgressReporterSphere
             // 

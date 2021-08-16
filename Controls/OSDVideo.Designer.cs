@@ -154,7 +154,7 @@
             this.hud1.Name = "hud1";
             this.hud1.navpitch = 0F;
             this.hud1.navroll = 0F;
-            this.hud1.opengl = true;
+    
             this.hud1.pitch = 0F;
             this.hud1.roll = 0F;
             this.hud1.Russian = false;
@@ -167,7 +167,7 @@
             this.hud1.targetspeed = 0F;
             this.hud1.turnrate = 0F;
             this.hud1.verticalspeed = 0F;
-            this.hud1.VSync = false;
+        
             this.hud1.wpno = 0;
             this.hud1.xtrack_error = 0F;
             // 
