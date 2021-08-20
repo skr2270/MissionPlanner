@@ -966,8 +966,7 @@ namespace MissionPlanner
             LayoutChanged += updateLayout;
             LayoutChanged(null, EventArgs.Empty);
 
-            if (Settings.Instance["CHK_GDIPlus"] != null)
-                GCSViews.FlightData.myhud.opengl = !bool.Parse(Settings.Instance["CHK_GDIPlus"].ToString());
+   
 
             if (Settings.Instance["CHK_hudshow"] != null)
                 GCSViews.FlightData.myhud.hudon = bool.Parse(Settings.Instance["CHK_hudshow"].ToString());
