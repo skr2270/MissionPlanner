@@ -22,6 +22,7 @@ using SvgNet.SvgGdi;
 #endif
 using MathHelper = MissionPlanner.Utilities.MathHelper;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
+using SkiaSharp.Views.Desktop;
 
 
 // Control written by Michael Oborne 2011
@@ -29,7 +30,7 @@ using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
 namespace MissionPlanner.Controls
 {
-    public class HUD : GLControl
+    public class HUD : SKControl
     {
         private static readonly ILog log =
             LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -84,7 +85,7 @@ namespace MissionPlanner.Controls
 
         public int huddrawtime = 0;
 
-        [DefaultValue(true)] public bool opengl { get; set; }
+        [DefaultValue(true)] public bool opengl { get; set; } = false;
 
         [Browsable(false)] public bool npotSupported { get; private set; }
 
@@ -172,6 +173,15 @@ namespace MissionPlanner.Controls
 
             graphicsObject = this;
             graphicsObjectGDIP = new GdiGraphics(Graphics.FromImage(objBitmap));
+
+            PaintSurface += OnPaintSurface;
+            started = true;
+        }
+
+        private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
+        {
+            graphicsObjectGDIP = new SkiaGraphics(e.Surface);
+            doPaint();
         }
 
         private float _roll = 0;
@@ -906,86 +916,11 @@ namespace MissionPlanner.Controls
             return this.Visible;
         }
 
-        protected override void OnLoad(EventArgs e)
+        protected void OnLoad(EventArgs e)
         {
             log.Info("OnLoad Start");
 
-            if (opengl && !DesignMode)
-            {
-                try
-                {
-
-                    OpenTK.Graphics.GraphicsMode test = base.GraphicsMode;
-                    // log.Info(test.ToString());
-                    log.Info("Vendor: " + GL.GetString(StringName.Vendor));
-                    log.Info("Version: " + GL.GetString(StringName.Version));
-                    log.Info("Device: " + GL.GetString(StringName.Renderer));
-                    //Console.WriteLine("Extensions: " + GL.GetString(StringName.Extensions));
-
-                    int[] viewPort = new int[4];
-
-                    log.Debug("GetInteger");
-                    GL.GetInteger(GetPName.Viewport, viewPort);
-                    log.Debug("MatrixMode");
-                    GL.MatrixMode(MatrixMode.Projection);
-                    log.Debug("LoadIdentity");
-                    GL.LoadIdentity();
-                    log.Debug("Ortho");
-                    GL.Ortho(0, Width, Height, 0, -1, 1);
-                    log.Debug("MatrixMode");
-                    GL.MatrixMode(MatrixMode.Modelview);
-                    log.Debug("LoadIdentity");
-                    GL.LoadIdentity();
-
-                    log.Debug("PushAttrib");
-                    GL.PushAttrib(AttribMask.DepthBufferBit);
-                    log.Debug("Disable");
-                    GL.Disable(EnableCap.DepthTest);
-                    log.Debug("BlendFunc");
-                    GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-                    log.Debug("Enable");
-                    GL.Enable(EnableCap.Blend);
-
-                    string versionString = GL.GetString(StringName.Version);
-                    string majorString = versionString.Split(' ')[0];
-                    var v = new Version(majorString);
-                    npotSupported = v.Major >= 2;
-                }
-                catch (Exception ex)
-                {
-                    log.Error("HUD opengl onload 1 ", ex);
-                }
-
-                try
-                {
-                    log.Debug("Hint");
-                    GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
-
-                    GL.Hint(HintTarget.LineSmoothHint, HintMode.Nicest);
-                    GL.Hint(HintTarget.PolygonSmoothHint, HintMode.Nicest);
-                    GL.Hint(HintTarget.PointSmoothHint, HintMode.Nicest);
-
-                    GL.Hint(HintTarget.TextureCompressionHint, HintMode.Nicest);
-                }
-                catch (Exception ex)
-                {
-                    log.Error("HUD opengl onload 2 ", ex);
-                }
-
-                try
-                {
-                    log.Debug("Enable");
-                    GL.Enable(EnableCap.LineSmooth);
-                    GL.Enable(EnableCap.PointSmooth);
-                    GL.Disable(EnableCap.PolygonSmooth);
-
-                }
-                catch (Exception ex)
-                {
-                    log.Error("HUD opengl onload 3 ", ex);
-                }
-            }
-
+        
             log.Info("OnLoad Done");
 
             started = true;
@@ -1096,8 +1031,8 @@ namespace MissionPlanner.Controls
                 if (opengl)
                 {
                     // make this gl window and thread current
-                    if (!base.Context.IsCurrent || DateTime.Now.Second % 5 == 0)
-                        MakeCurrent();
+                    //if (!base.Context.IsCurrent || DateTime.Now.Second % 5 == 0)
+                        //MakeCurrent();
 
                     GL.Clear(ClearBufferMask.ColorBufferBit);
 
@@ -1113,10 +1048,10 @@ namespace MissionPlanner.Controls
                 }
                 else if (opengl)
                 {
-                    this.SwapBuffers();
+                    //this.SwapBuffers();
 
                     // free from this thread
-                    Context.MakeCurrent(null);
+                    //Context.MakeCurrent(null);
                 }
 
             }
@@ -3320,7 +3255,7 @@ namespace MissionPlanner.Controls
             {
                 if (opengl)
                 {
-                    MakeCurrent();
+                    //MakeCurrent();
 
                     GL.MatrixMode(MatrixMode.Projection);
                     GL.LoadIdentity();
@@ -3345,7 +3280,7 @@ namespace MissionPlanner.Controls
             {
                 try
                 {
-                    return base.VSync;
+                    return false;
                 }
                 catch
                 {
@@ -3356,7 +3291,7 @@ namespace MissionPlanner.Controls
             {
                 try
                 {
-                    base.VSync = value;
+                    
                 }
                 catch
                 {
