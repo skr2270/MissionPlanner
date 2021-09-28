@@ -48,16 +48,7 @@
   <CheckListItem>
     <TrueColor>White</TrueColor>
     <FalseColor>White</FalseColor>
-    <Description>Check Altitude</Description>
-    <Text>{value} &lt; 5m</Text>
-    <TriggerValue>5</TriggerValue>
-    <Name>alt</Name>
-    <ConditionType>LT</ConditionType>
-  </CheckListItem>
-  <CheckListItem>
-    <TrueColor>White</TrueColor>
-    <FalseColor>White</FalseColor>
-    <Description>Props and motors secured?</Description>
+    <Description>Cadet pre-flight checklist</Description>
     <Text />
     <TriggerValue>0</TriggerValue>
     <Name>roll</Name>
@@ -66,16 +57,7 @@
   <CheckListItem>
     <TrueColor>White</TrueColor>
     <FalseColor>White</FalseColor>
-    <Description>No loose parts or cables?</Description>
-    <Text />
-    <TriggerValue>0</TriggerValue>
-    <Name>roll</Name>
-    <ConditionType>NONE</ConditionType>
-  </CheckListItem>
-  <CheckListItem>
-    <TrueColor>White</TrueColor>
-    <FalseColor>White</FalseColor>
-    <Description>Weather check?</Description>
+    <Description>Instructor Flight Authorisation</Description>
     <Text />
     <TriggerValue>0</TriggerValue>
     <Name>roll</Name>
