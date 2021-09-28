@@ -13,4 +13,5 @@
   <ShowNoFly>False</ShowNoFly>
   <showtfr>False</showtfr>
   <MainMaximised>Maximized</MainMaximised>
+  <CHK_GDIPlus>True</CHK_GDIPlus>
 </Config>
