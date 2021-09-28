@@ -1,5 +1,6 @@
 ﻿using GMap.NET;
 using GMap.NET.MapProviders;
+using log4net;
 using MissionPlanner.Comms;
 using MissionPlanner.Utilities;
 using SkiaSharp;
@@ -9,15 +10,19 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace MissionPlanner.Log
 {
     public class LogMap
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+
         public static void MapLogs(string[] logs)
         {
-            Parallel.ForEach(logs, logfile => { ProcessFile(logfile); });
+            Parallel.ForEach(logs, logfile => { lock(log) ProcessFile(logfile); });
         }
 
         public static void ProcessFile(string logfile)

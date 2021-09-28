@@ -73,32 +73,34 @@ namespace MissionPlanner.Log
 
                     if (logfile.ToLower().EndsWith(".bin")|| logfile.ToLower().EndsWith(".log"))
                     {
-                        var logBuffer = new DFLogBuffer(File.OpenRead(logfile));
+                        lock (log)
+                        { 
+                            var logBuffer = new DFLogBuffer(File.OpenRead(logfile));
 
-                        //PARM, 68613507, SYSID_THISMAV, 1
+                            //PARM, 68613507, SYSID_THISMAV, 1
 
-                        var sysidlist = logBuffer.GetEnumeratorType("PARM").Where(a => a["Name"] == "SYSID_THISMAV");
+                            var sysidlist = logBuffer.GetEnumeratorType("PARM").Where(a => a["Name"] == "SYSID_THISMAV");
 
-                        sysid = int.Parse(sysidlist.First()["Value"].ToString());
+                            sysid = int.Parse(sysidlist.First()["Value"].ToString());
 
-                        //logBuffer.dflog
+                            //logBuffer.dflog
 
-                        if (logBuffer.SeenMessageTypes.Contains("SIM"))
-                        {
-                            logBuffer.Dispose();
+                            if (logBuffer.SeenMessageTypes.Contains("SIM"))
+                            {
+                                logBuffer.Dispose();
 
-                            var destdir = masterdestdir + Path.DirectorySeparatorChar
-                                                        + "SITL" + Path.DirectorySeparatorChar
-                                                        + aptype.ToString() + Path.DirectorySeparatorChar
-                                                        + sysid + Path.DirectorySeparatorChar;
+                                var destdir = masterdestdir + Path.DirectorySeparatorChar
+                                                            + "SITL" + Path.DirectorySeparatorChar
+                                                            + aptype.ToString() + Path.DirectorySeparatorChar
+                                                            + sysid + Path.DirectorySeparatorChar;
 
 
-                            if (!Directory.Exists(destdir))
-                                Directory.CreateDirectory(destdir);
+                                if (!Directory.Exists(destdir))
+                                    Directory.CreateDirectory(destdir);
 
-                            MoveFileUsingMask(logfile, destdir);
+                                MoveFileUsingMask(logfile, destdir);
+                            }
                         }
-
                         return;
                     }
                     else
@@ -107,6 +109,7 @@ namespace MissionPlanner.Log
 
 
                     var parse = new MAVLink.MavlinkParse(true);
+                    lock (log)
                     using (var binfile = File.Open(logfile, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
                         var midpoint = binfile.Length / 8;
