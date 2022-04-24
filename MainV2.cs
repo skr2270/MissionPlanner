@@ -3219,7 +3219,6 @@ namespace MissionPlanner
             catch (Exception ex)
             {
                 log.Error("Error starting TCP listener thread: ", ex);
-                CustomMessageBox.Show(ex.ToString());
             }
 
             log.Info("start joystick");
@@ -3261,7 +3260,7 @@ namespace MissionPlanner
                 log.Error(ex);
             }
 
-
+            /*
             ThreadPool.QueueUserWorkItem(LoadGDALImages);
 
             ThreadPool.QueueUserWorkItem(BGLoadAirports);
@@ -3292,7 +3291,7 @@ namespace MissionPlanner
                 {
                 }
             });
-
+            */
             log.Info("start AutoConnect");
             AutoConnect.NewMavlinkConnection += (sender, serial) =>
             {
