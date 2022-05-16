@@ -63,7 +63,7 @@ jobs:
         run: |
           npm install --global create-dmg
           cd ExtLibs/Xamarin/Xamarin.MacOS/bin/Release/
-          create-dmg 'Mission Planner'
+          create-dmg 'Mission Planner.app' --dmg-title='Mission Planner'
           
       - uses: actions/upload-artifact@v2
         with:
